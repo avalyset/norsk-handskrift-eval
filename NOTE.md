@@ -19,3 +19,5 @@ av heldout-sidene (work/heldout-60.txt).
 en gang etter kl. 08:20:48 og før ca. 08:25 lokal tid (nøyaktig tidspunkt ikke logget; nedre grense er siste skriving i work/seg/chain_dec.log), med kommandoen `rm -f work/seg/*_lm_w0.75.*`. Mønsteret var ment for en avbrutt omkjøring av kjedene
 (`norhand_lm_w0.75.*`), men det traff også `gt_lm_w0.75.*`. Filene regenereres med `scripts/dec_lm.sh work/seg/gt work/seg/gt_lm_w0.75 0.75`
 (tidspunkt og sammenligning mot `results/gt-w0.75.json`, CER 7,897, føres her når kjøringen er ferdig). Lærdom: aldri glob-sletting.
+Regenerert 20.10.2026 08:40 (dekoding 200,9 s). Korpus-CER fra de regenererte filene er identisk med `results/gt-w0.75.json` (7,896887304063591) til alle sifre.
+Byte-sammenligning er ikke mulig, siden originalfilene er borte.

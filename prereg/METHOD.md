@@ -46,7 +46,7 @@ Enhet = **side**. Begrunnelse (målt fra `metadata_test.csv`, aggregater): alle 
 Train/val-overlapp (aggregat for alle 81 testsider; heldout-spesifikt er bevisst ikke regnet): 0 testdokumenter finnes i train eller val; 7 av 81 testskrivere finnes i train (4 i val). Det betyr at kjeden kan være noe optimistisk for 7 skrivere. Val deler 418 av 502 dokumenter med train (derfor er LM-vekt valgt på val foreløpig, ADR 0005).
 
 ## 8. Presisjon (fra pilotens spredning)
-Pilot, 20 sider, Kraken-kjede: korpus-CER 13,02 (§ 14); sidenes CER-spredning er stor (SD side-CER 15,5 pp for Doc-UFCN-kjeden; heldt-tungt hale). Ved å resample 20 pilotsider til n = 60 (20 000 trekk, seed 20261020) for Doc-UFCN NorHand-kjeden (korpus-CER 19,78) fås SD for korpus-CER ≈ 3,6 pp, altså **95 %-KI-halvbredde ≈ ±7 pp** (persentilintervall 13,1–27,3). Tilsvarende for n = 20 er ±12 pp (observert KI 11,0–33,8).
+Pilot, 20 sider, Kraken-kjede: korpus-CER 13,02 (§ 14); sidenes CER-spredning er stor (SD side-CER 15,5 pp for Doc-UFCN-kjeden; tung hale). Ved å resample 20 pilotsider til n = 60 (20 000 trekk, seed 20261020) for Doc-UFCN NorHand-kjeden (korpus-CER 19,78) fås SD for korpus-CER ≈ 3,6 pp, altså **95 %-KI-halvbredde ≈ ±7 pp** (persentilintervall 13,1–27,3). Tilsvarende for n = 20 er ±12 pp (observert KI 11,0–33,8).
 Dette undervurderer sannsynligvis usikkerheten, fordi resampling fra 20 sider ikke kan gi flere ekstreme sider enn pilotens ene (side 198129). Forventning: KI-bredde på 10–15 pp totalt for primærestimatet; forskjeller mellom konfigurasjoner på under ca. 5 pp kan ikke løses med 60 sider.
 
 ## 9. Bruksterskel

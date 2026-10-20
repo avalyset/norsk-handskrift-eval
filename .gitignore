@@ -15,3 +15,4 @@ work/seg/*/lines/
 work/val1000/lines/
 work/*/*.err
 *.png.tmp
+work/run-*/

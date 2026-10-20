@@ -57,7 +57,7 @@ def kjor():
 def gjenskaping(sider):
     held = {r[0] for r in heldout_rows()}
     if held & set(sider): print("NEKTER: heldout-side i gjenskapingstest", file=sys.stderr); sys.exit(2)
-    pilot = {l.split("/")[-1][:-4] for l in open(ROT / "data/p20/sample.txt")}
+    pilot = {l.strip().split("/")[-1][:-4] for l in open(ROT / "data/p20/sample.txt") if l.strip()}
     if not set(sider) <= pilot: print("NEKTER: gjenskapingstest bare på 20-utvalget", file=sys.stderr); sys.exit(2)
     w = ROT / "work" / "run-gjenskaping"; shutil.rmtree(w, ignore_errors=True); (w / "img").mkdir(parents=True); (w / "xml").mkdir()
     for s in sider:

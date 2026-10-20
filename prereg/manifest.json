@@ -1,0 +1,45 @@
+{
+ "versjon": "prereg-utkast",
+ "seed": 20261020,
+ "bootstrap": {
+  "B": 2000,
+  "metode": "prosentil over sider",
+  "nedre_indeks": 50,
+  "ovre_indeks": 1949
+ },
+ "segmenterer": {
+  "venv": "kraken",
+  "modell": "venv-kraken/lib/python3.10/site-packages/kraken/blla.mlmodel",
+  "script": "scripts/seg_kraken.py"
+ },
+ "lm_vekt": "1.0",
+ "batch": 16,
+ "linjehoyde_px": 128,
+ "sha256": {
+  "prereg/METHOD.md": "f8bd3a41f113ebed6e18f3d7bf0618d09decd45f69a485907457c0d1d0be49f0",
+  "prereg/run.py": "c662189cb5d612f140cbef1d8ea53f7ec916b1450793832482306b5776201f75",
+  "prereg/score.py": "966d5b8581c6bdc5b75160088cefa59080ec07cf103d698d3259933ba21c5562",
+  "scripts/guard.py": "9d72471b7910c1373427f79cf342cd639e5762340a256b0811ae8b5c94e0e868",
+  "scripts/lib.py": "e8091d6386e876a049818e7d3f14d117dde5aeb1b892f5c879a019ba159dc709",
+  "scripts/seg_generic.py": "57a16a0a80e86a6a1b9d272d9be7fb800c16884eb0a504a071284f88fc9f1958",
+  "scripts/seg_kraken.py": "f6319e4e60e241f2a3dcde8ad20803fa51d2c2c2309c5d0204728a69e8406c97",
+  "scripts/dec.sh": "03298fafc02cd2db3ca0b9b0e6f40c2b8ce050c408d5a6d3b3bbdf8076a8afc1",
+  "scripts/dec_lm.sh": "fe38b9f22c693020c1fb0147caddf4329733b2df986ab2bcf07f26dbac500b72",
+  "work/heldout-60.txt": "d55ddbd3db3f6cdb3b58fd8722c08b6472dc54491c197cda6e2811c420e44f8b",
+  "prereg/locks/venv-pylaia.freeze.txt": "b11847a4796df68245b81e0a98e3d34fa93bd709f727a9d6826defc6a8501c14",
+  "prereg/locks/venv-ufcn.freeze.txt": "b34cbf451c6836627013ef2da80fd6efea798fb47f304abb7615dfa87717518c",
+  "prereg/locks/venv-kraken.freeze.txt": "76ea5350d4c95e34c9e48402a88a988513ca405c647df962c37acd6191b1dda5",
+  "prereg/locks/venv-tools.freeze.txt": "fef29e661ce1ec1b2a42461404bb5bffa45c9db23eeae9a510100483a2dd417d",
+  "venv-kraken/lib/python3.10/site-packages/kraken/blla.mlmodel": "77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056",
+  "models/doc-ufcn-norhand-v1-line/model.pth": "8e6e5e4f272a9b43a98de036c9164fdc522d2780e2e66dd601bde930bb14a950",
+  "models/doc-ufcn-norhand-v1-line/parameters.yml": "c3cdabdd8503e517f9470c63ceefc788ad545574bd793248279ae1429650d5d7",
+  "models/doc-ufcn-generic-historical-line/model.pth": "b5d0659a29638446f573bec8928f3380f8643f4bee5c9ea7b8e64ae813dcc6f5",
+  "models/doc-ufcn-generic-historical-line/parameters.yml": "10d02400932639334ab11bb41325b6a43ac176d18d15e61501b64916cb9d9641",
+  "models/pylaia-norhand-v3/weights.ckpt": "4e49b4233c9bea4cfbe9a35e239e1c25421ceed9b194b07f6ec3d96e1b1a69fc",
+  "models/pylaia-norhand-v3/model": "f772db785caeac1d200615acafb57db0539c85d321972d8a65c21404e0d56c9a",
+  "models/pylaia-norhand-v3/syms.txt": "a79ff0eee81167a69fddb4d67f14eb35def8c4d315eef9155343a38e7309c0ea",
+  "models/pylaia-norhand-v3/tokens.txt": "1744f3f395335f1c69a28f9942b5c1a7051d6a4d4584a47b09266c0afe753ce6",
+  "models/pylaia-norhand-v3/lexicon.txt": "d372c6221efd2fbb14b3fa1b9570c763aed1cd6be1829f3a4c842101a050b48a",
+  "models/pylaia-norhand-v3/language_model.arpa.gz": "43b6a1f11ec090c604566d86058ced36507510b1ec74fb9d1e0c11c5d10a0bae"
+ }
+}
