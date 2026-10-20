@@ -136,3 +136,10 @@ Fortsatt åpne:
 | DEV-MAP v1.3 og WNG-BLUEPRINT v1.0 (§ 20) | `/Volumes/Vault/` (utenfor prosjektet) | SHA256 i `prereg/kilder/eksterne-dokumenter.sha256` |
 | «75 av 1 562» CSV-escape og del 1 med/uten rettelse | `work/hf_gt.tsv`, `work/hf_*.txt` (på disk, ikke i git) | reproduserbart: `scripts/csv_escape.py` → `results/csv-escape.json` |
 | Zenodo-metadata (`data/meta*/`) for overlapptall i § 7 og § 13 | Zenodo-zip, range-requests | lokalt; filene ligger i `data/` (ikke i git) |
+
+## 22. Etterskrift: OSF-registrering (20.10.2026)
+Dette er en etterskrift i en egen commit etter taggen `prereg-v1`, ikke en endring av frosset innhold. Den frosne versjonen er taggen `prereg-v1` (commit `4b9c09544d56a13512907875adcb7585a1846746`); `prereg/METHOD.md` slik den ligger i taggen har SHA256 `0670a8ffeb31d588974e0bac46bf0fc1a35c346c4d4a2c0ae5c753ef289dfabc` og er den som er vedlagt OSF-registreringen.
+- **OSF-registrering:** https://osf.io/uwz5n (registrert og offentlig 2026-10-20T08:10:59 UTC, ingen embargo; registreringstype OSF Preregistration), **DOI 10.17605/OSF.IO/UWZ5N**.
+- Vedlagt i registreringen: `prereg/METHOD.md` (SHA256 `0670a8ff…dfabc`) og `prereg/manifest.json` (SHA256 `9233f425…eac3`); OSF har selv registrert de samme SHA256-verdiene for de opplastede filene.
+- Tillegget endrer SHA256 for `prereg/METHOD.md` på `main`; se `prereg/AVVIK.md` nr. 1.
+
