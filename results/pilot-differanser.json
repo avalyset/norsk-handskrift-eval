@@ -11,12 +11,12 @@
   "kraken": 5.103632716737241
  },
  "del1_cer_linjenivaa": {
-  "r\u00e5_HF_tekst_LM1.0": 6.28,
-  "uten_csv_escape_LM1.0": 5.72
+  "r\u00e5_HF_tekst_LM1.0": 6.277617575669564,
+  "uten_csv_escape_LM1.0": 5.720546801627883
  },
  "kontroll_minus_del1_pp": {
-  "r\u00e5_HF_tekst_LM1.0": 1.6391739098135352,
-  "uten_csv_escape_LM1.0": 2.1991739098135357
+  "r\u00e5_HF_tekst_LM1.0": 1.6415563341439716,
+  "uten_csv_escape_LM1.0": 2.1986271081856525
  },
  "merknad": "kontroll er sideniv\u00e5 (20 sider, 406 fasitlinjer); del 1 er linjeniv\u00e5 over alle 1 562 HF-testlinjer"
 }

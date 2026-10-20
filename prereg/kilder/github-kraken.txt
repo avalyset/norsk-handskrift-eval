@@ -10,3 +10,9 @@
 {"encoding":"base64","name":"LICENSE","path":"LICENSE","sha":"5c304d1a4a7b439f767990bf1360d3283e45d0ee","size":11324,"type":"file"}
 ### repos/mittagessen/kraken/commits?path=kraken/blla.mlmodel&per_page=3
 [{"date":"2026-09-21T11:00:22Z","msg":"New BLLA base model","sha":"96316a0fd548"},{"date":"2022-04-05T19:36:10Z","msg":"change default segmentation model to one with higher resolution","sha":"31f195ea5aa2"},{"date":"2020-11-30T16:19:31Z","msg":"new default segmentation model with non-semantic text region","sha":"023d75b1c0f2"}]
+### tillegg hentet 2026-10-20T07:29Z med gh api: repos/mittagessen/kraken --jq '{license: .license.spdx_id, name: .license.name}'
+{"license":"Apache-2.0","name":"Apache License 2.0"}
+### tillegg hentet samme tid med gh api: "repos/mittagessen/kraken/contents/LICENSE?ref=7.1.1" --jq .content | base64 -d | head -3
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/

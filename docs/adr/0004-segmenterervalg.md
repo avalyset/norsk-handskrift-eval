@@ -11,8 +11,8 @@ Gjenkjenneren (pylaia-norhand-v3) er fast. Tre linjesegmenterere er målt på de
 | Doc-UFCN generic-historical-line (Teklia) | MIT | HF-rev. 3338539e…; `model.pth` b5d0659a29638446f573bec8928f3380f8643f4bee5c9ea7b8e64ae813dcc6f5 | 525 | 47 | 25,63 [19,4; 32,4] | 23,94 | 48,08 | 31 / 194 |
 | Kraken `blla.mlmodel` (standardmodell) | Apache-2.0 (se «Lisens» under) | `blla.mlmodel` 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056 | 520 | 27 | **13,02** [9,9; 16,4] | 14,09 | **26,74** | **359 / 382** |
 
-Teklia har ellers `doc-ufcn-generic-page` og en YOLO-sidemodell (sidenivå, ikke linje) som ikke er prøvd. Parede forskjeller (sidebootstrap, 2 000, seed 20261020), CER-poeng:
-Doc-UFCN NorHand − Kraken = +6,76 [−0,22; +18,10]; generic − Kraken = +12,61 [+6,76; +18,55]. Kraken har lavere side-CER på 10 av 20 sider. Forskjellen mot NorHand-modellen drives av få sider (side 198129: 75 → 22 % CER); medianen er lik.
+Teklia har ellers `doc-ufcn-generic-page` og en YOLO-sidemodell (sidenivå, ikke linje) som ikke er prøvd. Parede forskjeller (sidebootstrap, 2 000, seed 20261020, `random.Random`, nedre/øvre = sortert indeks 50/1 949; `scripts/parede.py` → `results/parede-segmenterere.json`), CER-poeng:
+Doc-UFCN NorHand − Kraken = +6,76 [−0,21; +18,10]; generic − Kraken = +12,61 [+6,77; +18,55]. Kraken har lavere side-CER på 10 av 20 sider. Forskjellen mot NorHand-modellen drives av få sider (side 198129: 75 → 22 % CER); medianen er lik.
 
 ## Lisens for blla.mlmodel (sjekket 20.10.2026)
 Filen ligger i Krakens kildetre: `kraken/blla.mlmodel` i GitHub `mittagessen/kraken`. Installert fil (kraken 7.1.1, 5 047 020 byte) har git-blob-hash `f64b630c2b40f132f1acb1ffc90b617d5ada54a4`; samme blob ligger på tag `7.1.1` (tag-objekt `e71c1070…`, commit `a314f84f42da49a34079a4166305a7f378bb9c71`) og ble sist endret i commit `31f195ea5aa2276d70cc7bdc1de0a52fc166b51a` (2022-04-05, «change default segmentation model to one with higher resolution»).

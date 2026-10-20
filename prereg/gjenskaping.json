@@ -7,5 +7,14 @@
  "ulike": [],
  "byte_identisk": true,
  "sha256_dec": "3ef8bf04ce0ed5aa23d21090adc6246ed2a14b6dd13567c54a4220d174c98752",
- "sha256_resultat": "49898eb58d85960e8c8ef8bddae23fe92cccbbc665fb04cf5279ff3d8193b1bb"
+ "sha256_resultat": "49898eb58d85960e8c8ef8bddae23fe92cccbbc665fb04cf5279ff3d8193b1bb",
+ "kode_sha256": {
+  "prereg/run.py": "e666c13a0f7ba2dbc02e8e45b335aeb899b115cb10b142ba86841dab8af0ad8a",
+  "prereg/score.py": "d756871fde1a21552c43f790285b8ab9ef62687bf1fd1bdd8c7fda78764f6a10",
+  "scripts/seg_kraken.py": "8f743a942252da76c4cd3ac5f25a14fe6a00adbd370fe2f1b54fe2de38078ec0",
+  "scripts/dec.sh": "e956e58788e772a08bc6286d71f03e298fd8940c41f176c947b4c542f8673bb6",
+  "scripts/dec_lm.sh": "fe38b9f22c693020c1fb0147caddf4329733b2df986ab2bcf07f26dbac500b72",
+  "scripts/guard.py": "89f5060c0082a9922b0fc2a776080d1f99045fbdf8911e792eb27acb751b992d",
+  "scripts/lib.py": "b070159c129116a75b4b0e7052edbcec9a702add7a923cc92cdc6cfa41327808"
+ }
 }

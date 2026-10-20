@@ -2,7 +2,7 @@
 """norsk-handskrift prereg: scoringsskript (frysekandidat, ikke frosset; parede IoU-mål er diagnostiske; primærmål er side-CER på tekst). Leser segmenteringsmeta + hypotesefil + PageXML-katalog; skriver bare tall (ingen tekst).
 usage: score.py <segdir> <hypfil> <xmldir> <ut.json> [forventet_antall_sider]          (kjøres i venv-tools)
 Stopper (kode 4) hvis en linje-ID fra segmenteringen mangler i dekodingsutdata (ingen delvis scoring) eller antall sider avviker fra det forventede.
-Primær: rå (sider = linjer slått sammen med ett mellomrom, whitespace sammenslått). Sekundær: normalisert (norm_text under).
+Primær: rå (sider = linjer slått sammen med ett mellomrom; fasitlinjer får whitespace sammenslått i lib.parse_gt, hypoteselinjer strippes og tomme hoppes over, men mellomrom inne i en hypoteselinje slås ikke sammen). Sekundær: normalisert (norm_text under).
 Side uten funne linjer eller med krasj: hypotese = tom tekst -> CER 100 % (ikke ekskludert; primær). Sensitivitet uten krasjsider rapporteres som sekundær.
 Fasit leses KUN fra PageXML ({xmldir}/{side}.xml via lib.parse_gt); HF-linjedatasettet (CSV-escape-feil) brukes aldri her."""
 import sys, os, json, re, random, unicodedata, statistics as st

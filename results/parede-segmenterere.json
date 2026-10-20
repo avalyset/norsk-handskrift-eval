@@ -1,0 +1,24 @@
+{
+ "seed": 20261020,
+ "B": 2000,
+ "nedre_indeks": 50,
+ "ovre_indeks": 1949,
+ "enhet": "side (20 pilotsider)",
+ "korpus_cer": {
+  "norhand": 19.78307703736721,
+  "kraken": 13.022806626550777,
+  "generic": 25.629596612435925
+ },
+ "norhand_minus_kraken": {
+  "punkt_pp": 6.7602704108164335,
+  "nedre": -0.2104685212298687,
+  "ovre": 18.097223256160206,
+  "kraken_lavere_side_cer_antall_sider": 10
+ },
+ "generic_minus_kraken": {
+  "punkt_pp": 12.606789985885149,
+  "nedre": 6.7663083492858185,
+  "ovre": 18.551502848536444,
+  "kraken_lavere_side_cer_antall_sider": 17
+ }
+}
