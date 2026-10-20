@@ -13,3 +13,9 @@ av heldout-sidene (work/heldout-60.txt).
 - Ikke avklart: /Volumes/Vault/norhand_v3.zip (30.07.2026) og DEV-MAP v1.3 beskriver en tidligere gjennomgang av
   «metadata + PageXML» i NorHand v3 (Winge-søk). Hvilke sider det omfattet, og om fasitteksten i testsettet ble lest,
   kan ikke spores i scripts/, work/ eller shell-historikk. «Port 8-målingen 19.–20.10» er ikke funnet i noen av dem.
+
+## Utilsiktet sletting (20.10.2026)
+`work/seg/gt_lm_w0.75.{err,time,txt}` (dekodingen av fasitlinjene med LM-vekt 0,75, punkt 4) ble slettet ved et uhell av meg 20.10.2026
+en gang etter kl. 08:20:48 og før ca. 08:25 lokal tid (nøyaktig tidspunkt ikke logget; nedre grense er siste skriving i work/seg/chain_dec.log), med kommandoen `rm -f work/seg/*_lm_w0.75.*`. Mønsteret var ment for en avbrutt omkjøring av kjedene
+(`norhand_lm_w0.75.*`), men det traff også `gt_lm_w0.75.*`. Filene regenereres med `scripts/dec_lm.sh work/seg/gt work/seg/gt_lm_w0.75 0.75`
+(tidspunkt og sammenligning mot `results/gt-w0.75.json`, CER 7,897, føres her når kjøringen er ferdig). Lærdom: aldri glob-sletting.
