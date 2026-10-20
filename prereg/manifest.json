@@ -16,7 +16,7 @@
  "batch": 16,
  "linjehoyde_px": 128,
  "sha256": {
-  "prereg/METHOD.md": "c8a565909f220433e3044201e91b54130b7e3b6b56084971431fc6db40d06cca",
+  "prereg/METHOD.md": "0670a8ffeb31d588974e0bac46bf0fc1a35c346c4d4a2c0ae5c753ef289dfabc",
   "prereg/run.py": "72ef8d3302f63947c4ac9386cb71eb22be1575485a917a9f427f9c040472e553",
   "prereg/score.py": "d756871fde1a21552c43f790285b8ab9ef62687bf1fd1bdd8c7fda78764f6a10",
   "scripts/guard.py": "89f5060c0082a9922b0fc2a776080d1f99045fbdf8911e792eb27acb751b992d",
