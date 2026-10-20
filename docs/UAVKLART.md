@@ -35,15 +35,25 @@ Modellkortets 7,52/22,99 og 6,36/18,11 er derfor ikke sammenlignbare med noen av
 - HF-datasettkortet sier «Norwegian Bokmål» (`language: nb`); tekstene er 1736–1950 og mye av det er dansk-norsk skriftspråk. Ikke undersøkt videre.
 
 ## Gjenstående funn og mistanker etter kontrollslyngen (20.10.2026)
-Kontrollrunder (fersk Opus-agent, endrede linjer ±5, feilklasse a–f): kontroll 1 = 17 verifiserte funn (V1–V17) pluss 4 støttefilfunn (K1–K4); kontroll 2 = 12 verifiserte funn; kontroll 3 = **0 verifiserte funn**. Ingen ytterligere runde er kjørt. Manifest etter siste runde: `prereg/manifest.json` SHA256 `0c9d721de3e6c9c19a66a5c8e6f0f5f589322724f9170116210cddb971aac9e0` (43 filer, `verifiser` OK).
+Kontrollrunder (fersk Opus-agent, endrede linjer ±5, feilklasse a–f): kontroll 1 = 17 verifiserte funn (V1–V17) pluss 4 støttefilfunn (K1–K4); kontroll 2 = 12 verifiserte funn; kontroll 3 = **0 verifiserte funn**. Ingen ytterligere runde er kjørt. Gjeldende manifest-hash står i `prereg/hashes.txt` (første linje).
 Mistanker fra kontroll 3 som ikke kunne verifiseres (ikke rettet):
 1. `docs/adr/0002-en-prosess-per-kjoring.md:16`: «byte-identiske utklipp ved to kjøringer 20.10 (387 av 387)» gjelder Doc-UFCN NorHand-segmenteren (387 linjer), ikke den frosne Kraken-kjeden (520). Målingen er ikke arkivert; gjenskapingstesten (`prereg/gjenskaping.json`) dekker Kraken-kjeden på to sider.
 2. `results/test-seg-krasj.txt` (kjørt 09:42:04) er eldre enn siste endring av `scripts/seg_kraken.py` (09:42:55; bare docstring og kommentar endret, kjørbar kode lik) og oppgir ingen kodehash.
 3. `prereg/kilder/hf-NorHand-v3-line-README.md` er hentet fra `raw/main`, ikke fra den pinnede revisjonen `113280c8…`, og har ingen tidsangivelse.
 Andre åpne punkter (fra tidligere i dette dokumentet og METHOD § 19/§ 20):
 - 1 562 mot 1 573 linjer er ikke forklart; Teklias DH2024-artikkel er ikke lest.
-- Heldout er mulig eksponert på linjenivå (HF-testlinjene er dekodet og scoret; side-til-linje-kobling finnes ikke og er ikke kontrollert), og en tidligere gjennomgang av NorHand v3 (30.07.2026) har ukjent omfang. «Port 8-målingen» ble ikke funnet.
-- `work/hf_gt.tsv`, `work/hf_nolm.txt`, `work/hf_lm.txt` ligger i lokal git og må ut før noe publiseres. `work/val1000/lm_w0.25.err` og `lm_w0.5.err` er sporet til tross for `.gitignore`.
+- En tidligere gjennomgang av NorHand v3 (30.07.2026) har ukjent omfang. «Port 8-målingen» ble ikke funnet.
 - Lisensen til `blla.mlmodel` er bare dekket av repoets Apache-2.0 etter plassering i kildetreet; ingen egen notis.
 - Baseline (`pylaia-norhand-v2`) er utsatt. Presisjon ved n = 60 (±1,9 pp Kraken, ±7 pp Doc-UFCN) er sannsynligvis for lav.
 - `run.py kjor` mot heldout er aldri kjørt; bare `verifiser`, `gjenskaping` og scoring er testet.
+
+## Håndtert (20.10.2026)
+- **Eksponering av heldout på linjenivå (pilot del 1):** skrevet inn i `prereg/METHOD.md` § 2 («Eksponering på linjenivå») og § 20, med forbehold om at koblingen linje→side ikke er kontrollert og at ca. ni enkeltlinjer ble vist.
+- **Datafiler i git:** `work/*` (unntatt heldout-lista, dens hash og `RESULTATER-pilot.md`), bilder, `*.tsv` og `*.parquet` er lagt i `.gitignore`, og historikken er renset med git filter-repo (`.git` 3 896 → 240 KiB; `git log --all` viser ingen datafiler). Filene ligger på disk. Dette omfatter også de sporede loggene `work/val1000/lm_w0.25.err` og `lm_w0.5.err`. Se METHOD § 17.
+
+## Uløste kontrollfunn (kontroll 4, 20.10.2026, ikke rettet; frys ikke utført)
+Kontrollen på METHOD/UAVKLART-diffen fant to funn som ikke er ren ordlyd (merket ANNET) og som derfor står uløst:
+- `prereg/METHOD.md:21` (§ 3): sier at `work/val1000/lm_w0.25.err` og `lm_w0.5.err` er «sporet i git, lagt inn i commit 99893d3» og at `work/p20/lm.err` er «committet». Etter filter-repo finnes verken commiten eller filene i git (`git ls-files`, `git log --all --name-only`); påstanden motsier METHOD § 17 og UAVKLART «Håndtert».
+- Samme linje, andre halvdel av påstanden: kontrollkommandoen «`git ls-files` 20.10.2026» gjelder tilstanden før rensingen.
+Rettet i denne runden (ordlyd): METHOD:40 («bare på disk i `work/`» → `work/` og `data/`) og METHOD:119 (kortformen utvidet så den stemmer med § 2).
+Ubekreftede mistanker fra kontrollen: antallet «ca. ni enkeltlinjer» har ikke belegg i en prosjektfil (de ble vist i terminalutskrift og i en rapport til Eirik); «3 896 KiB» før rensing kan ikke måles etter på; § 20 beskriver eksponeringen som ukontrollert mens UAVKLART fører punktet som håndtert (dokumentert, ikke løst).
