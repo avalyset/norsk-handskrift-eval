@@ -33,3 +33,17 @@ Modellkortets 7,52/22,99 og 6,36/18,11 er derfor ikke sammenlignbare med noen av
 ## Andre avvik funnet underveis
 - Dato i metadata: noen datoer er ugyldige (årstall 1 i `train` og `val`; 374 manglende datoer i train, 36 i val, 4 i test).
 - HF-datasettkortet sier «Norwegian Bokmål» (`language: nb`); tekstene er 1736–1950 og mye av det er dansk-norsk skriftspråk. Ikke undersøkt videre.
+
+## Gjenstående funn og mistanker etter kontrollslyngen (20.10.2026)
+Kontrollrunder (fersk Opus-agent, endrede linjer ±5, feilklasse a–f): kontroll 1 = 17 verifiserte funn (V1–V17) pluss 4 støttefilfunn (K1–K4); kontroll 2 = 12 verifiserte funn; kontroll 3 = **0 verifiserte funn**. Ingen ytterligere runde er kjørt. Manifest etter siste runde: `prereg/manifest.json` SHA256 `0c9d721de3e6c9c19a66a5c8e6f0f5f589322724f9170116210cddb971aac9e0` (43 filer, `verifiser` OK).
+Mistanker fra kontroll 3 som ikke kunne verifiseres (ikke rettet):
+1. `docs/adr/0002-en-prosess-per-kjoring.md:16`: «byte-identiske utklipp ved to kjøringer 20.10 (387 av 387)» gjelder Doc-UFCN NorHand-segmenteren (387 linjer), ikke den frosne Kraken-kjeden (520). Målingen er ikke arkivert; gjenskapingstesten (`prereg/gjenskaping.json`) dekker Kraken-kjeden på to sider.
+2. `results/test-seg-krasj.txt` (kjørt 09:42:04) er eldre enn siste endring av `scripts/seg_kraken.py` (09:42:55; bare docstring og kommentar endret, kjørbar kode lik) og oppgir ingen kodehash.
+3. `prereg/kilder/hf-NorHand-v3-line-README.md` er hentet fra `raw/main`, ikke fra den pinnede revisjonen `113280c8…`, og har ingen tidsangivelse.
+Andre åpne punkter (fra tidligere i dette dokumentet og METHOD § 19/§ 20):
+- 1 562 mot 1 573 linjer er ikke forklart; Teklias DH2024-artikkel er ikke lest.
+- Heldout er mulig eksponert på linjenivå (HF-testlinjene er dekodet og scoret; side-til-linje-kobling finnes ikke og er ikke kontrollert), og en tidligere gjennomgang av NorHand v3 (30.07.2026) har ukjent omfang. «Port 8-målingen» ble ikke funnet.
+- `work/hf_gt.tsv`, `work/hf_nolm.txt`, `work/hf_lm.txt` ligger i lokal git og må ut før noe publiseres. `work/val1000/lm_w0.25.err` og `lm_w0.5.err` er sporet til tross for `.gitignore`.
+- Lisensen til `blla.mlmodel` er bare dekket av repoets Apache-2.0 etter plassering i kildetreet; ingen egen notis.
+- Baseline (`pylaia-norhand-v2`) er utsatt. Presisjon ved n = 60 (±1,9 pp Kraken, ±7 pp Doc-UFCN) er sannsynligvis for lav.
+- `run.py kjor` mot heldout er aldri kjørt; bare `verifiser`, `gjenskaping` og scoring er testet.
