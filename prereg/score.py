@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""norsk-handskrift prereg: frosset scoringsskript. Leser segmenteringsmeta + hypotesefil + PageXML-katalog; skriver bare tall (ingen tekst).
+"""norsk-handskrift prereg: frosset scoringsskript (parede IoU-mål er diagnostiske; primærmål er side-CER på tekst). Leser segmenteringsmeta + hypotesefil + PageXML-katalog; skriver bare tall (ingen tekst).
 usage: score.py <segdir> <hypfil> <xmldir> <ut.json>          (kjøres i venv-tools)
 Primær: rå (sider = linjer slått sammen med ett mellomrom, whitespace sammenslått). Sekundær: normalisert (norm_text under).
-Side uten funne linjer eller med krasj: hypotese = tom tekst -> CER 100 % (ikke ekskludert)."""
+Side uten funne linjer eller med krasj: hypotese = tom tekst -> CER 100 % (ikke ekskludert; primær). Sensitivitet uten krasjsider rapporteres som sekundær.
+Fasit leses KUN fra PageXML ({xmldir}/{side}.xml via lib.parse_gt); HF-linjedatasettet (CSV-escape-feil) brukes aldri her."""
 import sys, os, json, re, random, unicodedata, statistics as st
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "scripts"))
 import numpy as np, jiwer
@@ -54,11 +55,12 @@ def poly(p):
     g = Polygon(p); return g if g.is_valid else g.buffer(0)
 def main(segdir, hypf, xmldir, outf):
     meta = json.load(open(segdir + "/meta.json")); hyp = lib.load_hyp(hypf); xmls = {}
-    pages = sorted(meta); R = {"n_pages": len(pages), "pages": {}}
+    pages = sorted(meta); R = {"n_pages": len(pages), "pages": {}}; crash = []
     acc = {k: ([], []) for k in ("cer", "wer", "ncer", "nwer")}; cats = {}
     seg = {t: dict(gt=0, pred=0, mat=0, ung=0, unp=0, split=0, merge=0, empty=0) for t in IOUS}
     for b in pages:
         m = meta[b]; gt = lib.parse_gt(f"{xmldir}/{b}.xml"); gtext = [t for t, _ in gt]
+        if m.get("n", len(m["order"])) == 0 or "error" in m: crash.append(len(R["pages"]))
         out = [hyp.get(i, "") for i in m["order"]]
         ref = " ".join(t for t in gtext if t); h = " ".join(o for o in out if o)
         for k, (r, hh, lv) in {"cer": (ref, h, "cer"), "wer": (ref, h, "wer"), "ncer": (norm_text(ref), norm_text(h), "cer"), "nwer": (norm_text(ref), norm_text(h), "wer")}.items():
@@ -84,6 +86,12 @@ def main(segdir, hypf, xmldir, outf):
                     for c, n in char_cats(gtext[i], out[j]).items(): cats[c] = cats.get(c, 0) + n
     for k in acc: R[k] = {"korpus": 100 * sum(acc[k][0]) / max(sum(acc[k][1]), 1), "ki95_sider": boot(*acc[k])}
     pc = [v["cer"] for v in R["pages"].values()]; R["median_side_cer"] = st.median(pc); R["snitt_side_cer"] = st.mean(pc)
+    rng = random.Random(SEED); mv = sorted(st.median([pc[rng.randrange(len(pc))] for _ in pc]) for _ in range(B)); R["median_side_cer_ki95"] = [mv[49], mv[1949]]
+    keep = [i for i in range(len(pc)) if i not in crash]; names = sorted(R["pages"])
+    R["sensitivitet_uten_krasjsider"] = {"ekskluderte_sider": [names[i] for i in crash], "n_igjen": len(keep)}
+    if keep:
+        for k in ("cer", "wer"): R["sensitivitet_uten_krasjsider"][k] = {"korpus": 100 * sum(acc[k][0][i] for i in keep) / max(sum(acc[k][1][i] for i in keep), 1), "ki95_sider": boot([acc[k][0][i] for i in keep], [acc[k][1][i] for i in keep])}
+        kp = [pc[i] for i in keep]; R["sensitivitet_uten_krasjsider"]["median_side_cer"] = st.median(kp)
     R["segmentering"] = {str(t): dict(S, tapt_andel=S["ung"] / max(S["gt"], 1), umatchet_pred_andel=S["unp"] / max(S["pred"], 1)) for t, S in seg.items()}
     R["feilkategorier_tegn_matchede_par_iou0.5"] = cats
     json.dump(R, open(outf, "w"), indent=1, ensure_ascii=False)

@@ -19,8 +19,15 @@ Min tidligere telling på 82 kom fra zip-katalogen: `test/images/` er selv en op
 ## Funn: CSV-escape i HF-linjetekstene
 75 av 1 562 HF-testlinjer (4,8 %) har `"` i fasiten, og alle 75 har CSV-stil-escape: teksten er omsluttet av `"…"` og indre `"` er doblet (`"bog: ""Blandt Nordpolens Naboer"""`). PageXML-teksten for samme linje er `bog: "Blandt Nordpolens Naboer"`.
 Målt fra pilotsidene: av 406 PageXML-linjer finnes 34 ikke ordrett i HF-test; alle unntatt tre (de er vertikale eller trykt tekst) avviker bare ved denne escapingen.
-Modellen produserer aldri `""` (0 av 75 hypoteser). Effekt på del 1 (LM vekt 1,0): rå HF-tekst CER 6,28 / WER 19,31; etter fjerning av escapingen CER 5,72 / WER 18,14. Uten LM: 7,29/24,31 mot 6,74/22,86.
-Tallene i `RESULTATER-pilot.md` (rå HF-tekst) er ikke endret, men escape-korrigert tall står ved siden av. Kjedemålingene (fasit fra PageXML) er ikke berørt.
+Modellen produserer aldri `""` (0 av 75 hypoteser). Del 1 (1 562 HF-testlinjer, korpus, rå), med og uten escape-rettelse (rettelse: fjern omsluttende `"` og dobbelt-`"` → `"` når linjen starter og slutter med `"` og inneholder `""`):
+
+| Variant | Uten språkmodell CER / WER | Med språkmodell (vekt 1,0) CER / WER |
+|---|---|---|
+| Rå HF-tekst (som lastet) | 7,29 / 24,31 | 6,28 / 19,31 |
+| Etter escape-rettelse (75 linjer) | 6,74 / 22,86 | 5,72 / 18,14 |
+| Modellkortet (oppgitt) | 7,52 / 22,99 | 6,36 / 18,11 |
+
+Tallene i `RESULTATER-pilot.md` (rå HF-tekst) er ikke endret, men escape-korrigerte tall står der ved siden av. **Fasitkilde i prereg:** `prereg/score.py` leser fasit bare fra PageXML (`lib.parse_gt`), aldri fra HF-CSV; ingen HF-data inngår i heldout-scoringen. Kjedemålingene på pilotsidene (fasit fra PageXML) er ikke berørt.
 Modellkortets 7,52/22,99 og 6,36/18,11 er derfor ikke sammenlignbare med noen av våre varianter uten at normaliseringen deres er kjent.
 
 ## Andre avvik funnet underveis

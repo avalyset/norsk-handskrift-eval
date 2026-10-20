@@ -41,7 +41,10 @@ def kjede(imgdir, xmldir, out, env=None):
     out = pathlib.Path(out); shutil.rmtree(out, ignore_errors=True); out.mkdir(parents=True)
     rel = lambda p: str(pathlib.Path(p).relative_to(ROT)) if str(p).startswith(str(ROT)) else str(p)
     sh([PY[SEG["venv"]], "-I", SEG["script"], rel(imgdir), rel(out / "seg")], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    sh(["scripts/dec_lm.sh", rel(out / "seg"), rel(out / "dec"), LM_VEKT])
+    for forsok in (1, 2):   # dekoderfeil: én gjentatt kjøring, deretter stopp (METHOD § 10)
+        r = subprocess.run(["scripts/dec_lm.sh", rel(out / "seg"), rel(out / "dec"), LM_VEKT], cwd=ROT, env={**os.environ, **(env or {})})
+        if r.returncode == 0 and (out / "dec.txt").stat().st_size > 0: break
+        if forsok == 2: print("FEIL: dekoding feilet to ganger, stopper (føres i AVVIK.md)", file=sys.stderr); sys.exit(3)
     # én side uten funne linjer gir tom liste; scoring teller den som CER 100 %
     sh([PY["tools"], "-I", "prereg/score.py", rel(out / "seg"), rel(out / "dec.txt"), rel(xmldir), rel(out / "resultat.json")])
 def kjor():

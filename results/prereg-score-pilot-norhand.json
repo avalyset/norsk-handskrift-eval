@@ -1,0 +1,218 @@
+{
+ "n_pages": 20,
+ "pages": {
+  "no-nb_digimanus_144017_0001": {
+   "cer": 6.7426400759734095,
+   "gt_lines": 25,
+   "found": 27,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_16320_0001": {
+   "cer": 5.122494432071269,
+   "gt_lines": 26,
+   "found": 26,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_168552_0001": {
+   "cer": 5.9523809523809526,
+   "gt_lines": 18,
+   "found": 18,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_19134_0001": {
+   "cer": 28.571428571428573,
+   "gt_lines": 11,
+   "found": 12,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_193882_0001": {
+   "cer": 10.681114551083592,
+   "gt_lines": 19,
+   "found": 18,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_194800_0001": {
+   "cer": 3.585657370517928,
+   "gt_lines": 9,
+   "found": 9,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_194823_0001": {
+   "cer": 13.235294117647058,
+   "gt_lines": 11,
+   "found": 10,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_198129_0001": {
+   "cer": 74.77845944103613,
+   "gt_lines": 34,
+   "found": 30,
+   "empty_pred": 3
+  },
+  "no-nb_digimanus_205478_0001": {
+   "cer": 15.476190476190476,
+   "gt_lines": 26,
+   "found": 23,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_205529_0001": {
+   "cer": 13.181242078580482,
+   "gt_lines": 22,
+   "found": 22,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_205563_0001": {
+   "cer": 25.806451612903224,
+   "gt_lines": 20,
+   "found": 15,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_206979_0001": {
+   "cer": 9.979633401221996,
+   "gt_lines": 16,
+   "found": 12,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_209213_0001": {
+   "cer": 16.803760282021152,
+   "gt_lines": 28,
+   "found": 24,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_214549_0001": {
+   "cer": 12.861736334405144,
+   "gt_lines": 16,
+   "found": 15,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_252128_0001": {
+   "cer": 9.891808346213292,
+   "gt_lines": 24,
+   "found": 23,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_291611_0001": {
+   "cer": 31.842105263157894,
+   "gt_lines": 18,
+   "found": 17,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_293849_0001": {
+   "cer": 21.073298429319372,
+   "gt_lines": 21,
+   "found": 23,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_293874_0001": {
+   "cer": 14.573991031390134,
+   "gt_lines": 25,
+   "found": 25,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_296279_0001": {
+   "cer": 11.860174781523096,
+   "gt_lines": 24,
+   "found": 24,
+   "empty_pred": 0
+  },
+  "no-nb_digimanus_65698_0001": {
+   "cer": 12.903225806451612,
+   "gt_lines": 13,
+   "found": 14,
+   "empty_pred": 0
+  }
+ },
+ "cer": {
+  "korpus": 19.78307703736721,
+  "ki95_sider": [
+   19.78307703736721,
+   11.020470986609205,
+   33.81877022653722
+  ]
+ },
+ "wer": {
+  "korpus": 35.801393728223,
+  "ki95_sider": [
+   35.801393728223,
+   26.3658940397351,
+   49.82510687912942
+  ]
+ },
+ "ncer": {
+  "korpus": 18.25250192455735,
+  "ki95_sider": [
+   18.25250192455735,
+   9.481216457960643,
+   32.29675164225878
+  ]
+ },
+ "nwer": {
+  "korpus": 30.603258476442097,
+  "ki95_sider": [
+   30.603258476442097,
+   20.82984073763621,
+   45.318782309017806
+  ]
+ },
+ "median_side_cer": 13.042233942516047,
+ "snitt_side_cer": 17.24615436777584,
+ "median_side_cer_ki95": [
+  10.330373976152794,
+  16.803760282021152
+ ],
+ "sensitivitet_uten_krasjsider": {
+  "ekskluderte_sider": [],
+  "n_igjen": 20,
+  "cer": {
+   "korpus": 19.78307703736721,
+   "ki95_sider": [
+    19.78307703736721,
+    11.020470986609205,
+    33.81877022653722
+   ]
+  },
+  "wer": {
+   "korpus": 35.801393728223,
+   "ki95_sider": [
+    35.801393728223,
+    26.3658940397351,
+    49.82510687912942
+   ]
+  },
+  "median_side_cer": 13.042233942516047
+ },
+ "segmentering": {
+  "0.5": {
+   "gt": 406,
+   "pred": 387,
+   "mat": 117,
+   "ung": 289,
+   "unp": 270,
+   "split": 7,
+   "merge": 2,
+   "empty": 3,
+   "tapt_andel": 0.7118226600985221,
+   "umatchet_pred_andel": 0.6976744186046512
+  },
+  "0.3": {
+   "gt": 406,
+   "pred": 387,
+   "mat": 338,
+   "ung": 68,
+   "unp": 49,
+   "split": 7,
+   "merge": 2,
+   "empty": 3,
+   "tapt_andel": 0.16748768472906403,
+   "umatchet_pred_andel": 0.12661498708010335
+  }
+ },
+ "feilkategorier_tegn_matchede_par_iou0.5": {
+  "oevrig": 242,
+  "tegnsetting": 42,
+  "siffer": 13,
+  "store_smaa": 14,
+  "mellomrom": 18,
+  "diakritikk": 9
+ }
+}
