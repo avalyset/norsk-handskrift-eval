@@ -9,7 +9,8 @@ av heldout-sidene (work/heldout-60.txt).
   Flyttet ut av heldout og inn i pilotgruppen. Heldout er dermed 60 sider, ikke 61.
 - Sidenavn (ikke innhold) for noen testsider ble listet i en terminalutskrift. Ikke flyttet; navn avslører ikke bildeinnhold.
 - metadata_test.csv (dato/forfatter for alle testsider) ble hentet til disk; kun to rader ble vist (begge pilotsider).
-  Filen er slettet.
+  Den opprinnelige filen (`data/page/test/metadata_test.csv`) ble slettet, men filen ble hentet på nytt senere samme dag: kopier av alle tre v3-splitter ligger i `data/meta/` og v2-splitter i `data/meta2/` (gitignored, brukt til overlappstall). Opprinnelig påstand «Filen er slettet» var dermed ikke varig sann.
+- Linjenivå: pilot del 1 kjørte gjenkjenneren på alle 1 562 HF-testlinjer (fra alle 81 sider, også heldout) og scoret mot HF-teksten; heldout er dermed delvis eksponert på linjenivå (METHOD § 5, ADR 0006).
 - Ikke avklart: /Volumes/Vault/norhand_v3.zip (30.07.2026) og DEV-MAP v1.3 beskriver en tidligere gjennomgang av
   «metadata + PageXML» i NorHand v3 (Winge-søk). Hvilke sider det omfattet, og om fasitteksten i testsettet ble lest,
   kan ikke spores i scripts/, work/ eller shell-historikk. «Port 8-målingen 19.–20.10» er ikke funnet i noen av dem.

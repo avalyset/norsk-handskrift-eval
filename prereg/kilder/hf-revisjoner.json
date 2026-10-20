@@ -1,0 +1,22 @@
+{
+ "Teklia/doc-ufcn-generic-historical-line": {
+  "license": "mit",
+  "sha": "3338539ef366fa0d963e87de675bc431183a7c80"
+ },
+ "Teklia/doc-ufcn-norhand-v1-line": {
+  "license": "mit",
+  "sha": "43ec736950e268798802a5499318f1183276f0ff"
+ },
+ "Teklia/pylaia-norhand-v2": {
+  "license": "mit",
+  "sha": "e21ba7a2b1777a9086f46d1cdfa62b05ea488010"
+ },
+ "Teklia/pylaia-norhand-v3": {
+  "license": "mit",
+  "sha": "6c97d8858f5221e7adefce28c3aa90298f684f9b"
+ },
+ "datasets/Teklia/NorHand-v3-line": {
+  "license": "mit",
+  "sha": "113280c8fbb7f6df7923ee15a7ba3c97710a8f1c"
+ }
+}

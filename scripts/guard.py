@@ -11,3 +11,6 @@ def check(ids, allow_heldout=False):
     bad = sorted(set(re.sub(r"(__\d+)?(\.\w+)?$", "", str(i)).split("/")[-1] for i in ids) & heldout_ids())
     if bad:
         sys.exit("HELDOUT-VAKT: avbryter, reserverte sider i inndata: " + ", ".join(bad[:5]))
+
+if __name__ == "__main__":   # brukes av scripts/dec.sh: guard.py <listefil med linje-ID-er>
+    check([l.strip() for l in open(sys.argv[1]) if l.strip()])

@@ -1,7 +1,7 @@
 # norsk-handskrift: kjedemåling på reserverte NorHand v3-testsider (prereg-utkast)
 
 Status: **FRYSEKANDIDAT, ikke frosset, ikke sendt til OSF.** Ingen tagg. Frys er Eiriks beslutning.
-Strukturen følger `~/dev/norsk-tale/kalibrering/METHOD.md` (prereg-v1). Datert 2026-10-20. Alle tall i dette dokumentet er målt fra data i `work/` og `results/`.
+Strukturen følger `~/dev/norsk-tale/kalibrering/METHOD.md` (prereg-v1). Datert 2026-10-20. Tall er målt fra data i `work/`, `results/` og `data/meta*/` (Zenodo-metadata). Eksterne opplysninger (Zenodo, Hugging Face, GitHub, Transkribus, modellkort) er kildemerket i § 21 med kontrollstatus.
 
 ## 1. Formål
 Estimere ytelsen til en fast kjede (linjesegmentering, utklipp 128 px, PyLaia-gjenkjenning med 6-gram tegn-LM) på de **60 reserverte testsidene** i NorHand v3 (`work/heldout-60.txt`).
@@ -16,7 +16,7 @@ Dette er **estimering, ikke hypotesetest.** Ingen nullhypotese, ingen p-verdi. R
 ## 3. Kjede (frosset ved frys)
 1. **Segmentering**, én prosess per kjøring (ADR 0002): **Kraken `blla.mlmodel`** (ADR 0004, besluttet av Eirik 20.10.2026; Doc-UFCN NorHand v1-line (MIT) er dokumentert fallback). Polygoner sorteres på y ved linjens venstre 15 % (tolerant for skrå linjer), deretter x.
 2. **Utklipp:** polygonmaske (hvitt utenfor), omskrevet rektangel, skalert til høyde 128 px, bredde = round(w·128/h), `cv2.INTER_AREA` (ADR 0003).
-3. **Gjenkjenning:** `Teklia/pylaia-norhand-v3`, `pylaia-htr-decode-ctc`, batch 16, **6-gram LM med vekt 1,0** (ADR 0005), `--decode.join_string ""`, `--decode.convert_spaces true`, CPU. Én prosess per kjøring.
+3. **Gjenkjenning:** `Teklia/pylaia-norhand-v3`, `pylaia-htr-decode-ctc`, batch 16, **6-gram LM med vekt 1,0** (ADR 0005), `--decode.join_string ""`, `--decode.convert_spaces true`, CPU (ingen enhetsflagg er satt; dekoderloggen sier «GPU available: False, used: False», `work/hf_nolm.err`). Én prosess per kjøring.
 4. **Side-tekst** = linjetekster i sorteringsrekkefølge, tomme hoppet over, slått sammen med ett mellomrom.
 5. **Fasit** = `TextEquiv/Unicode` for hver `TextLine` i PageXML, i filens rekkefølge, whitespace sammenslått, slått sammen med ett mellomrom. (HF-linjedatasettet brukes ikke: det har CSV-escape-feil i 75 av 1 562 testlinjer, se `docs/UAVKLART.md`.)
 
@@ -24,31 +24,31 @@ Dette er **estimering, ikke hypotesetest.** Ingen nullhypotese, ingen p-verdi. R
 | Del | Verdi |
 |---|---|
 | Gjenkjenner | `Teklia/pylaia-norhand-v3`, HF-revisjon `6c97d8858f5221e7adefce28c3aa90298f684f9b`, `weights.ckpt` SHA256 `4e49b4233c9bea4cfbe9a35e239e1c25421ceed9b194b07f6ec3d96e1b1a69fc` |
-| LM | `language_model.arpa.gz` `43b6a1f11ec090c604566d86058ced36507510b1ec74fb9d1e0c11c5d10a0bae`, `model` `f772db785caeac1d200615acafb57db0539c85d321972d8a65c21404e0d56c9a`, `syms.txt`, `tokens.txt`, `lexicon.txt` (alle i manifestet) |
+| LM | `language_model.arpa.gz` (filnavnet sier `.gz`, men filen er ukomprimert ARPA-tekst: `file` og `gzip -dc` kontrollert 20.10.2026; PyLaia/torchaudio leser den slik, dekodingen virker) `43b6a1f11ec090c604566d86058ced36507510b1ec74fb9d1e0c11c5d10a0bae`, `model` `f772db785caeac1d200615acafb57db0539c85d321972d8a65c21404e0d56c9a`, `syms.txt`, `tokens.txt`, `lexicon.txt` (alle i manifestet) |
 | Segmenterer | Kraken 7.1.1, `blla.mlmodel` `77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056` |
 | Alternativer (rapporteres, § 12) | Doc-UFCN NorHand v1-line `model.pth` `8e6e5e4f…14a950` (HF `43ec7369…`), Doc-UFCN generic-historical-line `model.pth` `b5d0659a…cc6f5` (HF `3338539e…`) |
 | Datasett | NorHand v3, Zenodo versjon v1, DOI 10.5281/zenodo.10255840, `norhand_v3.zip` 11 693 880 999 byte, md5 `2db0cde67448f40882e3168f3c8096c4`, CC BY 4.0. HF-linjedatasett (kun for LM-vektsveip): `Teklia/NorHand-v3-line` revisjon `113280c8fbb7f6df7923ee15a7ba3c97710a8f1c`, MIT |
 | Miljø | macOS 27.0.1, Apple M1 Pro, Python 3.10.6, uv 0.11.8; fire venv-er (ADR 0001): pylaia (torch 1.13.1), ufcn (torch 2.1.0), kraken (torch 2.14.0, scipy 1.13.1), tools. Eksakte versjoner: `prereg/locks/venv-*.freeze.txt` (uv pip freeze; det finnes ingen `uv.lock` fordi venv-ene ikke er et uv-prosjekt) |
 | Kode | `prereg/run.py`, `prereg/score.py`, `scripts/{guard,lib,seg_kraken,seg_generic}.py`, `scripts/{dec,dec_lm}.sh`; SHA256 i `prereg/manifest.json` |
-Alle lisenser: MIT, Apache-2.0 eller CC BY 4.0. `blla.mlmodel` ligger i Krakens kildetre (`kraken/blla.mlmodel`, git-blob `f64b630c2b40f132f1acb1ffc90b617d5ada54a4`, sist endret i commit `31f195ea5aa2276d70cc7bdc1de0a52fc166b51a`) og er dekket av repoets Apache-2.0; en egen lisens- eller proveniensnotis for selve modellfila og dens treningsdata finnes ikke (ADR 0004). Hvis det ikke godtas, er Doc-UFCN NorHand fallback.
+Lisenser for modeller og data: MIT, Apache-2.0 eller CC BY 4.0. Python-avhengighetene har egne lisenser (f.eks. torch 2.14.0: «Apache-2.0 AND Apache-2.0 WITH LLVM-exception AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND MIT» per pakkens METADATA). `blla.mlmodel` ligger i Krakens kildetre (`kraken/blla.mlmodel`, git-blob `f64b630c2b40f132f1acb1ffc90b617d5ada54a4`, sist endret i commit `31f195ea5aa2276d70cc7bdc1de0a52fc166b51a`) og er dekket av repoets Apache-2.0; en egen lisens- eller proveniensnotis for selve modellfila og dens treningsdata finnes ikke (ADR 0004). Hvis det ikke godtas, er Doc-UFCN NorHand fallback.
 
 ## 5. Data
 `work/heldout-60.txt` (SHA256 `d55ddbd3db3f6cdb3b58fd8722c08b6472dc54491c197cda6e2811c420e44f8b`): 60 side-ID-er med SHA256 for bildefil og PageXML-fil. Heldout er de 81 testsidene minus 20 pilotsider (seed 20261020) minus `no-nb_digimanus_252116_0001` (brukt i første enkeltsidemåling).
-`run.py kjor` leser bare denne lista, henter hver side fra Zenodo (range-requests), sjekker SHA256 og stopper ved avvik. Skriptene avbryter hvis en heldout-ID kommer inn utenfor `run.py` (`scripts/guard.py`).
-Heldout er ikke åpnet, segmentert eller gjenkjent før frys. Forbehold (NOTE.md): en tidligere gjennomgang av NorHand v3-metadata og PageXML (30.07.2026) kan ha berørt testsidene; ikke kontrollerbart.
+`run.py kjor` leser bare denne lista, henter hver side fra Zenodo (range-requests), sjekker SHA256 og stopper ved avvik. Heldout-vakten (`scripts/guard.py`) avbryter hvis en heldout-ID kommer inn utenfor `run.py`. Den kjøres av alle skript som tar side- eller linje-ID-er: `seg_kraken.py`, `seg_generic.py`, `gt_crop.py`, `analyze.py`, `dec.sh` (guard.py som kommandolinje, kode 9) og `prereg/score.py`. Ikke vaktet er de eldre pilotskriptene `scripts/score.py`, `score20.py`, `score_val.py` og `boot1.py`; de leser HF-linjedata eller pilotdata og tar ikke side-ID-er.
+**Heldout er ikke segmentert eller scoret på sidenivå før frys, men er delvis eksponert på linjenivå:** pilot del 1 (20.10.2026) kjørte gjenkjenneren på alle 1 562 HF-testlinjer og scoret dem mot HF-teksten. De linjene kommer fra alle 81 testsider, også de 60 heldout-sidene. Linjebildene og linjetekstene fra heldout er dermed sett, og linjenivå-CER over alle 81 sider (6,28 % / 5,72 % etter escape-rettelse) er kjent. Heldout-linjenes tekst ligger i `work/hf_gt.tsv`, `work/hf_nolm.txt` og `work/hf_lm.txt` (committet lokalt, ikke pushet; må ut av git før noe publiseres, se § 17). Ikke gjort: segmentering, sideutklipp og sidenivå-scoring på heldout. `run.py kjor` tømmer arbeidskatalogen først, og `score.py` krever 60 sider. Forbehold (NOTE.md): en tidligere gjennomgang av NorHand v3-metadata og PageXML (30.07.2026) kan ha berørt testsidene; ikke kontrollerbart.
 
 ## 6. Normalisering
-- **Primær (rå):** ingen tegnendring. Sidetekster slås sammen med ett mellomrom; sammenhengende whitespace → ett mellomrom; strip. CER = jiwer `process_characters` (S+D+I) / antall referansetegn; WER = jiwer `process_words` (S+D+I) / antall referanseord (whitespace-splittet), begge summert over sider (korpusnivå).
+- **Primær (rå):** modellens og fasitens tekst uten tegnendring. Fasit (PageXML-linje): whitespace slås sammen til ett mellomrom og strippes (`lib.parse_gt`). Hypotese: hver linje strippes og tomme linjer hoppes over; mellomrom **inne i** en linje beholdes slik modellen skriver dem (ingen sammenslåing; pilot: 4 av 520 Kraken-linjer har dobbelt mellomrom, og sammenslåing ville gitt korpus-CER 13,04 i stedet for 13,02 ifølge kontrollør). Linjer slås sammen til sidetekst med ett mellomrom. CER = jiwer `process_characters` (S+D+I) / antall referansetegn; WER = jiwer `process_words` (S+D+I) / antall referanseord (whitespace-splittet), begge summert over sider (korpusnivå).
 - **Sekundær (normalisert), eksakt:** `unicodedata.normalize("NFC")` → `str.lower()` → fjern alle tegn med Unicode-kategori `P*` → whitespace → ett mellomrom → strip. Sifre, diakritikk (æøå) og symboler (kategori `S*`) beholdes. Implementasjon: `norm_text` i `prereg/score.py`.
 - Ingen tallkonvertering, ingen skrivemåtenormalisering (æ/ø/å, dansk-norsk ortografi, abbreviasjoner), ingen korrektor.
 
 ## 7. Bootstrap og klynge
 Enhet = **side**. Begrunnelse (målt fra `metadata_test.csv`, aggregater): alle 81 testsider er ulike dokumenter (81 `urn`) og ulike skrivere (81 forfattere), så side = dokument = skriver; klynge på dokument/skriver gir samme resampling som side, og en dyp klyngestruktur finnes ikke i testsettet.
-Train/val-overlapp (aggregat for alle 81 testsider; heldout-spesifikt er bevisst ikke regnet): 0 testdokumenter finnes i train eller val; 7 av 81 testskrivere finnes i train (4 i val). Det betyr at kjeden kan være noe optimistisk for 7 skrivere. Val deler 418 av 502 dokumenter med train (derfor er LM-vekt valgt på val foreløpig, ADR 0005).
+Train/val-overlapp (aggregat for alle 81 testsider; per heldout-side er det ikke regnet. Av de to oppgitte tallene følger 4 av 60 heldout-sider som differanse: 7 skrivere i train blant 81 minus 3 blant de 21 pilotsidene): 0 testdokumenter finnes i train eller val; 7 av 81 testskrivere finnes i train (4 i val). Det betyr at kjeden kan være noe optimistisk for 7 skrivere. 417 av 502 dokumenter i val (distinkte ikke-tomme `urn`) finnes også i train; 353 av 1 078 val-rader har tom `urn` og er ikke regnet (derfor er LM-vekt valgt på val foreløpig, ADR 0005).
 
 ## 8. Presisjon (fra pilotens spredning)
-Pilot, 20 sider, Kraken-kjede: korpus-CER 13,02 (§ 14); sidenes CER-spredning er stor (SD side-CER 15,5 pp for Doc-UFCN-kjeden; tung hale). Ved å resample 20 pilotsider til n = 60 (20 000 trekk, seed 20261020) fås for Doc-UFCN NorHand-kjeden (korpus-CER 19,78) SD ≈ 3,6 pp, altså **95 %-KI-halvbredde ≈ ±7 pp** (persentilintervall 13,1–27,3), og for den frosne Kraken-kjeden (korpus-CER 13,02) SD ≈ 1,0 pp, **halvbredde ≈ ±1,9 pp** (11,1–14,9). Tilsvarende for n = 20 er ±12 pp (Doc-UFCN; observert KI 11,0–33,8) og ±3,2 pp (Kraken; observert 9,8–16,4). ±7 pp er den forsiktige planleggingsverdien; ±1,9 pp gjelder den frosne kjeden og er sannsynligvis for lav.
-Dette undervurderer sannsynligvis usikkerheten, fordi resampling fra 20 sider ikke kan gi flere ekstreme sider enn pilotens ene (side 198129). Forventning: totalbredde på KI for primærestimatet et sted mellom ca. 4 pp (Kraken-pilotens spredning) og ca. 14 pp (Doc-UFCN-pilotens); forskjeller mellom konfigurasjoner på under ca. 5 pp kan ikke løses med 60 sider.
+Pilot, 20 sider, Kraken-kjede: korpus-CER 13,02 (§ 14); sidenes CER-spredning er stor (SD side-CER 15,5 pp for Doc-UFCN-kjeden; tung hale). Ved å resample 20 pilotsider til n = 60 (20 000 trekk, seed 20261020) fås for Doc-UFCN NorHand-kjeden (korpus-CER 19,78) SD ≈ 3,6 pp, altså **95 %-KI-halvbredde ≈ ±7 pp** (persentilintervall 13,1–27,3; `scripts/presisjon.py`, `numpy.random.default_rng(20261020)`, `rng.integers(0, 20, n)`, 20 000 trekk, `results/presisjon.json`; en annen RNG gir ±0,1 pp forskjell i grensene), og for den frosne Kraken-kjeden (korpus-CER 13,02) SD ≈ 1,0 pp, **halvbredde ≈ ±1,9 pp** (11,1–14,9). Tilsvarende for n = 20 er ±12 pp (Doc-UFCN; observert KI 11,0–33,8) og ±3,2 pp (Kraken; observert 9,9–16,4). ±7 pp er den forsiktige planleggingsverdien; ±1,9 pp gjelder den frosne kjeden og er sannsynligvis for lav.
+Dette undervurderer sannsynligvis usikkerheten, fordi resampling fra 20 sider ikke kan gi sider som er mer ekstreme enn de 20 observerte. Verste side i Doc-UFCN-kjeden er 198129 (74,8 % CER), i Kraken-kjeden 194823 (27,1 %); med tilbakelegging kan en side trekkes flere ganger, men aldri en verre side. Forventning: totalbredde på KI for primærestimatet et sted mellom ca. 4 pp (Kraken-pilotens spredning) og ca. 14 pp (Doc-UFCN-pilotens); forskjeller mellom konfigurasjoner på under ca. 5 pp kan ikke løses med 60 sider.
 
 ## 9. Bruksterskel
 **Terskel: median side-CER ≤ 10 % på rå tekst** (punktestimatet fra § 2(b); KI for medianen rapporteres ved siden av). Utfallet merkes «under/over terskelen», og terskelen endrer ingen kjede.
@@ -58,16 +58,16 @@ Forbehold: kilden gjelder modellens CER på valideringssider, ikke median side-C
 ## 10. Eksklusjoner (skrevet før kjøring)
 | Tilfelle | Behandling |
 |---|---|
-| Segmenteringen krasjer eller gir 0 linjer for en side | siden **beholdes**: tom hypotese, CER 100 %, WER 100 %; krasj fanges per side i `scripts/seg_kraken.py` (feilmelding i `meta.json`), kjøringen fortsetter; antall rapporteres separat, og sensitivitetsanalysen (§ 2(g)) kjøres uten disse sidene |
-| Dekodingsprosessen feiler | én gjentatt kjøring; feiler den igjen, **stopper kjøringen** (kode 3), ingen delvis scoring, føres i `AVVIK.md` |
+| Segmenteringen krasjer eller gir 0 linjer for en side | siden **beholdes**: tom hypotese, CER 100 %, WER 100 %; krasj fanges per side i `scripts/seg_kraken.py` (hele sidebehandlingen: åpning, segmentering, maskering, skalering, skriving; feilmelding i `meta.json`, delvis skrevne utklipp fjernes), kjøringen fortsetter; antall rapporteres separat, og sensitivitetsanalysen (§ 2(g)) kjøres uten disse sidene |
+| Dekodingsprosessen feiler | én gjentatt kjøring; feiler den igjen, **stopper kjøringen** (kode 3), ingen delvis scoring, føres i `AVVIK.md`. `run.py` bruker dekoderens egen exit-kode (`dec.sh` bevarer den) og krever at alle linje-ID-er fra segmenteringen finnes i utdata; `score.py` stopper med kode 4 hvis noen mangler eller antall sider ikke er 60 |
 | Hash for bilde/PageXML avviker fra lista | **stopp**, ingen måling; avvik føres i `AVVIK.md` |
 | Side uten fasit-linjer | beholdes; referanse tom → feil = antall hypotesetegn; rapporteres separat |
-| Ressursvakt (minne < 20 % ledig, swap > +1 GB, intern disk < 10 GiB) | kjøringen pauses/gjenopptas; ikke en eksklusjon |
+| Ressursvakt (minne < 20 % ledig, swap > +1 GB mot start, intern disk < 10 GiB) | `run.py` (`vakt()`) kontrollerer før hvert steg (segmentering, hver dekoding, scoring) og pauser i 30 s-intervaller i opptil 1 t, deretter stopp (kode 5). Vakten kontrollerer ikke under en pågående prosess. Ikke en eksklusjon |
 Ingen side ekskluderes på grunnlag av resultat.
 
 ## 11. Forhåndsregistrerte feilkategorier
-**Segmenteringsnivå** (diagnostisk; fra IoU-parring, terskel 0,5 og 0,3): (S1) tapt fasitlinje: ingen funnet linje med IoU ≥ t; (S2) umatchet funnet linje; (S3) splitt: fasitlinje der ≥ 2 funne linjer hver har ≥ 50 % av eget areal inne i fasitlinjen; (S4) sammenslåing: funnet linje der ≥ 2 fasitlinjer hver har ≥ 50 % av eget areal inne i den; (S5) tomt fragment: funnet linje med tom gjenkjent tekst.
-**Tegnnivå** (diagnostisk; matchede par ved IoU ≥ 0,5; tegnjustering fra jiwer; ett tegn per kategori, prioritert i rekkefølgen): (T1) tegnsetting (Unicode `P*`); (T2) mellomrom; (T3) store/små bokstaver (kun forskjell i case); (T4) diakritikk (samme grunnbokstav etter NFD, eller par a/å, o/ø, e/æ); (T5) siffer; (T6) øvrig. Definisjonen ligger i `_cat` i `prereg/score.py`.
+**Segmenteringsnivå** (diagnostisk). S1 og S2 rapporteres per IoU-terskel (0,5 og 0,3): (S1) tapt fasitlinje: ingen funnet linje med IoU ≥ t; (S2) umatchet funnet linje. S3–S5 er uavhengige av IoU-terskelen (areal ≥ 50 % og antall tomme) og rapporteres én gang (`segmentering_uavhengig_av_iou`): (S3) splitt: fasitlinje der ≥ 2 funne linjer hver har ≥ 50 % av eget areal inne i fasitlinjen; (S4) sammenslåing: funnet linje der ≥ 2 fasitlinjer hver har ≥ 50 % av eget areal inne i den; (S5) tomt fragment: funnet linje med tom gjenkjent tekst.
+**Tegnnivå** (diagnostisk; matchede par ved IoU ≥ 0,5; tegnjustering fra jiwer; ett tegn per kategori, prioritert i rekkefølgen): (T1) tegnsetting (referanse- **eller** hypotesetegn har Unicode-kategori `P*`); (T2) mellomrom (referanse- eller hypotesetegn er mellomrom, etter T1); (T3) store/små bokstaver (kun forskjell i case); (T4) diakritikk (samme grunnbokstav etter NFD, eller par a/å, o/ø, e/æ); (T5) siffer; (T6) øvrig. Definisjonen ligger i `_cat` i `prereg/score.py`. Par med tom hypotese eller tom referanse kategoriseres tegn for tegn som sletting eller innsetting.
 Kategoriene er beskrivende (antall og andel); ingen signifikanstest.
 
 ## 12. Alle kandidater og piloten rapporteres
@@ -79,22 +79,23 @@ Resultatrapporten skal inneholde, uavhengig av hva som velges: de tre segmentere
 ## 14. Pilot (kontekst, ikke del av estimatet; eksplorativ, ikke preregistrert)
 Kilder: `results/*.json`, `docs/adr/`, `work/RESULTATER-pilot.md`. 20 sider (seed 20261020), 406 fasitlinjer:
 - Fasitlinjer (kontroll, LM 1,0): korpus-CER 7,92, WER 19,86, median side-CER 5,53.
-- Kjeder (rå tekst, `prereg/score.py`): Kraken blla CER 13,02 [9,8; 16,4], WER 26,74, median side-CER 14,09 [9,0; 17,2], normalisert CER 11,57 / WER 22,02; Doc-UFCN NorHand CER 19,78 [11,0; 33,8], median 13,04 [10,3; 16,8]; generic-historical CER 25,63 [19,3; 32,4] (analyseskriptet; ADR 0004).
-- Kontroll minus del 1 (sideutvalgets vanskelighet) og kjede minus kontroll (segmenteringens bidrag) står i `results/` og rapporten.
+- Kjeder (rå tekst, `prereg/score.py`): Kraken blla CER 13,02 [9,9; 16,4], WER 26,74, median side-CER 14,09 [9,0; 17,2], normalisert CER 11,57 / WER 22,02; Doc-UFCN NorHand CER 19,78 [11,0; 33,8], median 13,04 [10,3; 16,8]; generic-historical CER 25,63 [19,4; 32,4] (analyseskriptet; ADR 0004).
+- Differanser (`results/pilot-differanser.json`, `scripts/differanser.py`): kjede minus kontroll (segmenteringens bidrag): Doc-UFCN NorHand +11,86 pp, generic +17,71 pp, Kraken +5,10 pp. Kontroll minus del 1 (sideutvalgets vanskelighet; del 1 er linjenivå): +1,64 pp mot rå HF-tekst (6,28), +2,20 pp mot escape-rettet (5,72).
 
 ## 15. Gjenskaping og hasher
 `prereg/run.py` er eneste inngangspunkt (`verifiser`, `manifest`, `kjor`, `gjenskaping`). `prereg/manifest.json` har SHA256 for METHOD.md, run.py, score.py (scoringsskriptet), guard.py, lib.py, segmenteringsskript, dekodingsskript, heldout-lista, locks-filene, alle modellfiler (også kandidater) og parametere. `verifiser` stopper med kode 2 ved avvik.
-**Gjenskapingstest** (på 2 av de 20 pilotsidene, aldri heldout): kjede kjørt to ganger i separate prosesser; SHA256 av dekodingsutdata, segmenteringspolygoner (uten veggklokketid), alle utklipp og resultat-JSON sammenlignes; resultat i `prereg/gjenskaping.json`. Er utdata ikke byte-identisk, stopper frysen og funnet legges fram.
+**Gjenskapingstest** (på 2 av de 20 pilotsidene, aldri heldout): kjede kjørt to ganger i separate prosesser; SHA256 av dekodingsutdata, segmenteringspolygoner (uten veggklokketid), alle utklipp og resultat-JSON sammenlignes; resultat i `prereg/gjenskaping.json`. Er utdata ikke byte-identisk, stopper frysen og funnet legges fram. **Resultat 20.10.2026 (etter siste kodeendring, sidene 194800 og 194823):** 48 av 48 sammenlignede filer byte-identiske; SHA256 av dekodingsutdata `3ef8bf04ce0ed5aa23d21090adc6246ed2a14b6dd13567c54a4220d174c98752`, av resultat-JSON `49898eb58d85960e8c8ef8bddae23fe92cccbbc665fb04cf5279ff3d8193b1bb`. Testen dekker to sider og én maskin; `run.py kjor` mot heldout er ikke kjørt.
 
 ## 16. Avviksprotokoll
 Alle endringer etter frys føres i `prereg/AVVIK.md` **før** de tas i bruk og før scoring: dato, hva (fil/§/felt), begrunnelse, hvilke mål som påvirkes, ny SHA256. Eldre oppføringer endres aldri. Eventuelle avvik fra scoringen føres før scoringsskriptet kjøres på heldout.
 
 ## 17. Personvern
 Tidsspenn: hele testsplitten har dokumenter fra **1830 til 1940** (4 av 81 uten dato); train/val går til 1950 (metadata har enkelte ugyldige datoer). Skriverne i testsplitten er dermed født lenge før 1930 og er med svært høy sannsynlighet døde; tredjepersoner i brevene (barn, naboer) kan teoretisk leve for dokumenter fra 1930-årene. Data er publisert av Nasjonalbiblioteket via Zenodo under CC BY 4.0.
+**Før noe publiseres må `work/hf_gt.tsv`, `work/hf_nolm.txt` og `work/hf_lm.txt` ut av git:** de inneholder linjetekster fra alle 81 testsider, også heldout (§ 5).
 Vurdering: lav risiko. Regel for denne studien: **bare tall publiseres fra heldout**; ingen bilder, transkripsjoner, linjeeksempler eller navn fra heldout i rapport eller repo. Eksempellinjer hentes fra pilotsider og sjekkes for navn før publisering. Fullstendig juridisk vurdering (GDPR/personopplysningsloven for levende tredjepersoner) er ikke gjort.
 
 ## 18. Ekstern gyldighet
-Heldout måler **in-distribution**: samme samling (Nasjonalbibliotekets digimanus-brev og dagbøker, 1830–1940), samme digitalisering, Teklias transkripsjonskonvensjoner, og modellene er trent på samme samling. Hver testside har en egen skriver, og 7 av 81 testskrivere finnes i train, så det er skriver-diversitet, men ikke domene-diversitet. Resultatet sier derfor ingenting om ytelse på andre arkiver, andre skannerprofiler eller andre perioder.
+Heldout måler **in-distribution**: samme samling (Nasjonalbibliotekets digimanus-brev og dagbøker; testsplitten 1830–1940, hele NorHand v3 1736–1950 per metadata), samme digitalisering, Teklias transkripsjonskonvensjoner, og modellene er trent på samme samling. Hver testside har en egen skriver, og 7 av 81 testskrivere finnes i train, så det er skriver-diversitet, men ikke domene-diversitet. Resultatet sier derfor ingenting om ytelse på andre arkiver, andre skannerprofiler eller andre perioder.
 Forslag til ekstern samling for et senere sett (ikke hentet, ikke verifisert): norske håndskrevne kilder fra Arkivverket/Digitalarkivet (f.eks. skannede kirkebøker eller folketellingsskjemaer) med manuell fasit. Må sjekkes: lisens på bilder og transkripsjon, om manuell linjenivå-fasit finnes, og at kildene ikke inngår i NorHand-treningen.
 
 ## 19. Skjønnsvalg og åpne punkter før frys
@@ -102,7 +103,7 @@ Besluttet av Eirik 20.10.2026: (1) segmenterer Kraken blla, med Doc-UFCN NorHand
 Fortsatt åpne:
 1. **LM-vekt 1,0**: valgt på validation (foreløpig fordi val deler dokumenter med train) og beholdt framfor pilotoptimum 0,75 (forskjell 0,022 pp CER, støy). Heldout kjøres ikke med annen vekt.
 2. Rå som primær normalisering; normalisert (case + tegnsetting) som sekundær.
-3. Primær enhet side (ikke dokument/skriver): sammenfaller i testsettet; heldout-spesifikk skriveroverlapp med train er ikke regnet.
+3. Primær enhet side (ikke dokument/skriver): sammenfaller i testsettet; heldout-spesifikk skriveroverlapp med train er ikke regnet per rad (differansen 7 − 3 = 4 av 60 følger av aggregatene i § 7).
 4. Om de to andre segmentererne skal kjøres på heldout (§ 12): standard er nei; de rapporteres bare på pilotsidene.
 5. Terskelen i § 9 sammenligner median side-CER mot en kilde som gjelder validerings-CER; se forbeholdet der.
 6. HF-linjedatasettets escape-feil og at modellkortets 7,52/22,99 og 6,36/18,11 ikke kan reproduseres entydig; ingen heldout-påstand om modellkortets tall.
@@ -115,3 +116,19 @@ Fortsatt åpne:
 - **Winge-materialet:** Eirik har et eget Winge-spor (WNG-BLUEPRINT v1.0, 2026-08-02; DEV-MAP v1.3) der NorHand er vurdert som basemodell og sammenligningsgrunnlag. Winge-materialet er ikke en del av NorHand (DEV-MAP: Sigurd Winge finnes ikke i NorHand v3). Resultater fra denne studien kan påvirke beslutninger i Winge-sporet; studien bruker ingen Winge-data.
 - **Presisjon:** ±7 pp (Doc-UFCN-kjeden) og ±1,9 pp (Kraken-kjeden) halvbredde ved n = 60, begge fra resampling av 20 pilotsider og sannsynligvis for lave (§ 8).
 - Første enkeltsidemåling brukte `no-nb_digimanus_252116_0001` (flyttet ut av heldout), og `gt_lm_w0.75.*` ble slettet ved uhell og regenerert (`NOTE.md`).
+
+## 21. Eksterne opplysninger og kontrollstatus
+Øyeblikksbilder (hentet 20.10.2026) ligger i `prereg/kilder/` og er hashet i manifestet. «Lokalt» betyr kontrollert mot en fil i prosjektet.
+| Opplysning i dokumentet | Kilde | Kontrollstatus |
+|---|---|---|
+| Zenodo NorHand v3: DOI 10.5281/zenodo.10255840, versjon v1, CC BY 4.0, `norhand_v3.zip` 11 693 880 999 byte, md5 `2db0cde67448f40882e3168f3c8096c4` | `prereg/kilder/zenodo-10255840-norhand-v3.json` (Zenodo API) | zip-størrelsen lokalt kontrollert mot `/Volumes/Vault/norhand_v3.zip`; **md5 ikke regnet på nytt** (krever lesing av hele zip-en, også heldout-bytes) |
+| Zenodo NorHand v2: DOI 10.5281/zenodo.10628791, `norhand_v2.zip` 8 601 958 924 byte | `prereg/kilder/zenodo-10628791-norhand-v2.json` | fra API; `data/meta2/` er hentet fra denne posten |
+| HF-revisjoner og lisenser: `pylaia-norhand-v3` `6c97d885…`, `pylaia-norhand-v2` `e21ba7a2…` (MIT), `doc-ufcn-norhand-v1-line` `43ec7369…`, `doc-ufcn-generic-historical-line` `3338539e…`, datasett `NorHand-v3-line` `113280c8…` (MIT) | `prereg/kilder/hf-revisjoner.json` (HF API) | revisjonshashene er hentet fra API; vektfilenes SHA256 er regnet lokalt (manifest); HF LFS-oid er ikke sammenlignet; datasettet er ikke lagret lokalt som cache |
+| Kraken: tag 7.1.1 → commit `a314f84f…`, blob `f64b630c…`, commit `31f195ea…`, `LICENSE` Apache-2.0 | `prereg/kilder/github-kraken.txt` (GitHub API) | blob-hash lokalt kontrollert (`git hash-object` på installert fil) |
+| Transkribus-sitatet og «2–8 % CER» (§ 9) | help.transkribus.org/character-error-rate-and-learning-curve, lest 20.10.2026 | **ikke lagret lokalt, ikke gjenkontrollert**; siden kan endres |
+| Modellkortets 7,52/22,99 og 6,36/18,11, 1 573 linjer | `models/pylaia-norhand-v3/README.md` (lokal kopi) | lokalt |
+| arXiv:2404.19317 (vekt 1,5, «hver testside egen skriver» for v2) | lest 20.10.2026 i nettleser (arxiv.org/html) | ikke lagret lokalt |
+| Teklia DH2024-artikkelen | PDF gir AccessDenied, publikasjonssiden 404 | **ikke lest** |
+| DEV-MAP v1.3 og WNG-BLUEPRINT v1.0 (§ 20) | `/Volumes/Vault/` (utenfor prosjektet) | SHA256 i `prereg/kilder/eksterne-dokumenter.sha256` |
+| «75 av 1 562» CSV-escape og del 1 med/uten rettelse | `work/hf_gt.tsv`, `work/hf_*.txt` | reproduserbart: `scripts/csv_escape.py` → `results/csv-escape.json` |
+| Zenodo-metadata (`data/meta*/`) for overlapptall i § 7 og § 13 | Zenodo-zip, range-requests | lokalt; filene ligger i `data/` (ikke i git) |

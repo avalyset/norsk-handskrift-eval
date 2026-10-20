@@ -8,8 +8,8 @@ Gjenkjenneren (pylaia-norhand-v3) er fast. Tre linjesegmenterere er målt på de
 | Segmenterer | Lisens | Versjon / SHA256 | Linjer funnet (fasit 406) | tomme | korpus-CER % [95 % KI, sider] | median side-CER | WER % | fasitlinjer matchet IoU ≥ 0,5 / ≥ 0,3 |
 |---|---|---|---|---|---|---|---|---|
 | Doc-UFCN NorHand v1-line (Teklia) | MIT | HF-rev. 43ec7369…; `model.pth` 8e6e5e4f272a9b43a98de036c9164fdc522d2780e2e66dd601bde930bb14a950 | 387 | 3 | 19,78 [11,0; 33,8] | 13,04 | 35,80 | 117 / 338 |
-| Doc-UFCN generic-historical-line (Teklia) | MIT | HF-rev. 3338539e…; `model.pth` b5d0659a29638446f573bec8928f3380f8643f4bee5c9ea7b8e64ae813dcc6f5 | 525 | 47 | 25,63 [19,3; 32,4] | 23,94 | 48,08 | 31 / 194 |
-| Kraken `blla.mlmodel` (standardmodell) | Apache-2.0 (se «Lisens» under) | `blla.mlmodel` 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056 | 520 | 27 | **13,02** [9,8; 16,4] | 14,09 | **26,74** | **359 / 382** |
+| Doc-UFCN generic-historical-line (Teklia) | MIT | HF-rev. 3338539e…; `model.pth` b5d0659a29638446f573bec8928f3380f8643f4bee5c9ea7b8e64ae813dcc6f5 | 525 | 47 | 25,63 [19,4; 32,4] | 23,94 | 48,08 | 31 / 194 |
+| Kraken `blla.mlmodel` (standardmodell) | Apache-2.0 (se «Lisens» under) | `blla.mlmodel` 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056 | 520 | 27 | **13,02** [9,9; 16,4] | 14,09 | **26,74** | **359 / 382** |
 
 Teklia har ellers `doc-ufcn-generic-page` og en YOLO-sidemodell (sidenivå, ikke linje) som ikke er prøvd. Parede forskjeller (sidebootstrap, 2 000, seed 20261020), CER-poeng:
 Doc-UFCN NorHand − Kraken = +6,76 [−0,22; +18,10]; generic − Kraken = +12,61 [+6,76; +18,55]. Kraken har lavere side-CER på 10 av 20 sider. Forskjellen mot NorHand-modellen drives av få sider (side 198129: 75 → 22 % CER); medianen er lik.

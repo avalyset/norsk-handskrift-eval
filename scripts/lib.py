@@ -37,4 +37,4 @@ def boot(errs,lens,B=2000,seed=20261020,units=None):
     n=len(errs); rng=random.Random(seed); e=np.array(errs,float); l=np.array(lens,float); v=[]
     for _ in range(B):
         ix=[rng.randrange(n) for _ in range(n)]; v.append(100*e[ix].sum()/l[ix].sum())
-    v.sort(); return 100*e.sum()/l.sum(), v[49], v[1949]
+    v.sort(); return 100*e.sum()/l.sum(), v[50], v[1949]

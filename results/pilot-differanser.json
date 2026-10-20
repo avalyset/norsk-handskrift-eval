@@ -1,0 +1,22 @@
+{
+ "kontroll_cer": 7.919173909813535,
+ "kjede_cer": {
+  "norhand": 19.78307703736721,
+  "generic": 25.629596612435925,
+  "kraken": 13.022806626550777
+ },
+ "kjede_minus_kontroll_pp": {
+  "norhand": 11.863903127553675,
+  "generic": 17.710422702622388,
+  "kraken": 5.103632716737241
+ },
+ "del1_cer_linjenivaa": {
+  "r\u00e5_HF_tekst_LM1.0": 6.28,
+  "uten_csv_escape_LM1.0": 5.72
+ },
+ "kontroll_minus_del1_pp": {
+  "r\u00e5_HF_tekst_LM1.0": 1.6391739098135352,
+  "uten_csv_escape_LM1.0": 2.1991739098135357
+ },
+ "merknad": "kontroll er sideniv\u00e5 (20 sider, 406 fasitlinjer); del 1 er linjeniv\u00e5 over alle 1 562 HF-testlinjer"
+}

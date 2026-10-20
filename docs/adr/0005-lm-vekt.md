@@ -23,13 +23,13 @@ Optimum A: **1,0**. Utvalget er 1 000 av 22 679 linjer (ikke hele validation-spl
 | CER | 8,528 | 8,149 | **7,897** | 7,919 | 8,350 | 8,937 |
 | WER | 22,822 | 21,124 | 19,991 | **19,861** | 21,254 | 21,646 |
 
-Optimum B (CER): **0,75**. Forskjellen til 1,0 er 0,022 prosentpoeng CER; WER er lavere ved 1,0. Sidebootstrap-KI for CER overlapper nesten helt (0,75: [5,16; 11,13], 1,0: [5,27; 11,09]).
+Optimum B (CER): **0,75**. Forskjellen til 1,0 er 0,022 prosentpoeng CER; WER er lavere ved 1,0. Sidebootstrap-KI for CER overlapper nesten helt (0,75: [5,17; 11,13], 1,0: [5,27; 11,09]).
 
 ## Beslutning
 Vekt **1,0**. Begrunnelse: (1) validation-optimum er 1,0; (2) forskjellen mellom 0,75 og 1,0 i B er støy på 20 sider; (3) kjeden på pilotsidene (punkt 3b/5) er allerede kjørt med 1,0, og alle kandidatsammenligninger er dermed gjort med samme vekt.
 Eirik besluttet dette 20.10.2026 etter å ha sett begge optimumene.
 
 ## Konsekvenser
-- Validation deler dokumenter med train (418 av 502 dokumenter i val finnes også i train, målt fra `metadata_*.csv`), og LM-en er trent på train-tekst; A er derfor foreløpig og kan favorisere høyere vekt. Pilotsidene i B deler ingen dokumenter med train/val (0 av 21), men 3 av 21 har skriver i train (2 av 20 i selve 20-utvalget).
+- Validation deler dokumenter med train (417 av 502 dokumenter i val (distinkte ikke-tomme `urn`; 353 av 1 078 val-rader har tom `urn`) finnes også i train, målt fra `metadata_*.csv`), og LM-en er trent på train-tekst; A er derfor foreløpig og kan favorisere høyere vekt. Pilotsidene i B deler ingen dokumenter med train/val (0 av 21), men 3 av 21 har skriver i train (2 av 20 i selve 20-utvalget).
 - Litteraturpriorens 1,5 er ikke bekreftet: CER ved 1,5 er høyere enn ved 1,0 både i A og B.
 - Heldout måles bare med den vekten som er frosset her; den justeres ikke etterpå.
