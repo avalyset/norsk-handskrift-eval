@@ -1,7 +1,8 @@
+import sys; sys.path.insert(0,"scripts"); import guard
 import sys, json, yaml, cv2, numpy as np, time
 from doc_ufcn.main import DocUFCN
 m="models/doc-ufcn-norhand-v1-line"; p=yaml.safe_load(open(m+"/parameters.yml"))["parameters"]
-img=sys.argv[1]; out=sys.argv[2]
+img=sys.argv[1]; out=sys.argv[2]; guard.check([img])
 net=DocUFCN(3,p["input_size"],"cpu"); net.load(m+"/model.pth",p["mean"],p["std"],mode="eval")
 im=cv2.cvtColor(cv2.imread(img),cv2.COLOR_BGR2RGB); t=time.time()
 polys,_,_,_=net.predict(im,min_cc=p["min_cc"]); print("predict s",round(time.time()-t,2))

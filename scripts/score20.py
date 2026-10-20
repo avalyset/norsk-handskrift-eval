@@ -1,7 +1,7 @@
 import json,re,jiwer,statistics as st
 meta=json.load(open("work/p20/meta.json")); hyp={}
 for l in open("work/p20/lm.txt",encoding="utf8").read().split("\n"):
-    if l: i,_,r=l.partition(" "); c,_,t=r.partition(" "); hyp[i]=(c,t)
+    if l and not l.startswith("#"): i,_,r=l.partition(" "); c,_,t=r.partition(" "); hyp[i]=(c,t)
 R=[];H=[];tot=0;nf=0;ng=0;empty=0;short=0;pc=[];pw=[]
 for b,m in meta.items():
     x=open(f"data/p20/test/page/{b}.xml",encoding="utf8").read()

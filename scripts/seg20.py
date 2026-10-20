@@ -1,9 +1,11 @@
+import sys; sys.path.insert(0,"scripts"); import guard
 import json, yaml, cv2, numpy as np, time, os
 from doc_ufcn.main import DocUFCN
 m="models/doc-ufcn-norhand-v1-line"; p=yaml.safe_load(open(m+"/parameters.yml"))["parameters"]
 net=DocUFCN(3,p["input_size"],"cpu"); net.load(m+"/model.pth",p["mean"],p["std"],mode="eval")
 os.makedirs("work/p20/lines",exist_ok=True); meta={}; ids=[]
-for f in sorted(os.listdir("data/p20/test/images")):
+_files=sorted(os.listdir("data/p20/test/images")); guard.check(_files)
+for f in _files:
     b=f[:-4]; im=cv2.cvtColor(cv2.imread("data/p20/test/images/"+f),cv2.COLOR_BGR2RGB)
     t=time.time(); polys,_,_,_=net.predict(im,min_cc=p["min_cc"]); dt=time.time()-t
     rows=[]

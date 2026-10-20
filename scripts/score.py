@@ -2,7 +2,7 @@ import sys, jiwer, re
 def load(p):
     d={}
     for l in open(p,encoding="utf8").read().split("\n"):
-        if not l: continue
+        if not l or l.startswith("#"): continue
         i,_,rest=l.partition(" "); c,_,t=rest.partition(" "); d[i]=t
     return d
 gt={l.split("\t")[0]:l.rstrip("\n").split("\t",1)[1] for l in open(sys.argv[1],encoding="utf8") if "\t" in l}
