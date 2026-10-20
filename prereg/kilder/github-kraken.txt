@@ -16,3 +16,9 @@
 Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
+### tillegg hentet 2026-10-20T07:41Z med gh api: repos/mittagessen/kraken --jq .default_branch
+main
+### tillegg hentet samme tid med gh api: "repos/mittagessen/kraken/contents/LICENSE?ref=main" --jq .sha
+5c304d1a4a7b439f767990bf1360d3283e45d0ee
+### tillegg hentet samme tid med gh api: "repos/mittagessen/kraken/git/ref/heads/main" --jq .object.sha
+bb487219e7d8289274443d1ad0989efb4924dc2a

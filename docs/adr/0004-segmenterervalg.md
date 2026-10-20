@@ -12,11 +12,11 @@ Gjenkjenneren (pylaia-norhand-v3) er fast. Tre linjesegmenterere er målt på de
 | Kraken `blla.mlmodel` (standardmodell) | Apache-2.0 (se «Lisens» under) | `blla.mlmodel` 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056 | 520 | 27 | **13,02** [9,9; 16,4] | 14,09 | **26,74** | **359 / 382** |
 
 Teklia har ellers `doc-ufcn-generic-page` og en YOLO-sidemodell (sidenivå, ikke linje) som ikke er prøvd. Parede forskjeller (sidebootstrap, 2 000, seed 20261020, `random.Random`, nedre/øvre = sortert indeks 50/1 949; `scripts/parede.py` → `results/parede-segmenterere.json`), CER-poeng:
-Doc-UFCN NorHand − Kraken = +6,76 [−0,21; +18,10]; generic − Kraken = +12,61 [+6,77; +18,55]. Kraken har lavere side-CER på 10 av 20 sider. Forskjellen mot NorHand-modellen drives av få sider (side 198129: 75 → 22 % CER); medianen er lik.
+Doc-UFCN NorHand − Kraken = +6,76 [−0,21; +18,10]; generic − Kraken = +12,61 [+6,77; +18,55]. Kraken har lavere side-CER på 10 av 20 sider. Forskjellen mot NorHand-modellen drives av få sider (side 198129: 75 → 22 % CER); medianene er nær hverandre (13,04 mot 14,09).
 
 ## Lisens for blla.mlmodel (sjekket 20.10.2026)
 Filen ligger i Krakens kildetre: `kraken/blla.mlmodel` i GitHub `mittagessen/kraken`. Installert fil (kraken 7.1.1, 5 047 020 byte) har git-blob-hash `f64b630c2b40f132f1acb1ffc90b617d5ada54a4`; samme blob ligger på tag `7.1.1` (tag-objekt `e71c1070…`, commit `a314f84f42da49a34079a4166305a7f378bb9c71`) og ble sist endret i commit `31f195ea5aa2276d70cc7bdc1de0a52fc166b51a` (2022-04-05, «change default segmentation model to one with higher resolution»).
-Repoets `LICENSE` (blob `5c304d1a4a7b439f767990bf1360d3283e45d0ee`, uendret mellom tag 7.1.1 og main) er Apache License 2.0; GitHub oppgir `Apache-2.0`. Modellfila er dermed dekket av repoets lisens, så langt det kan avgjøres.
+Repoets `LICENSE` (blob `5c304d1a4a7b439f767990bf1360d3283e45d0ee` på tag 7.1.1; samme blob på standardgrenen `main` (commit `bb487219…`) ifølge `prereg/kilder/github-kraken.txt`, hentet 2026-10-20T07:41Z) er Apache License 2.0; GitHub oppgir `Apache-2.0`. Modellfila er dermed dekket av repoets lisens, så langt det kan avgjøres.
 Forbehold: jeg fant ingen separat lisens- eller proveniensnotis for selve modellfila eller for treningsdataene bak den; at repolisensen dekker en binær modellfil er en slutning fra filplasseringen, ikke en uttrykkelig erklæring. `main` har siden en nyere blla-modell (commit `96316a0f…`, 2026-09-21) som **ikke** brukes.
 
 ## Anbefaling (besluttet av Eirik, se status)

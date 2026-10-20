@@ -1,0 +1,7 @@
+test_seg_kraken_krasj.py: tvunget skrivefeil (cv2.imwrite -> False på tredje kall), side no-nb_digimanus_194800_0001
+exit-kode seg_kraken.py: 0
+n: 0
+list.txt tom: ja
+error i meta.json: ja (RuntimeError('cv2.imwrite feilet: no-nb_digimanus_194800_0001__002.png'))
+utklipp igjen i lines/: 0
+resultat: OK

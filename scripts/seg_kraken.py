@@ -1,6 +1,6 @@
 """usage: seg_kraken.py <bildedir> <utdir> -- Kraken blla standardmodell, samme utklipp/sortering som seg_generic. Heldout-vakt.
 Krasj per side (åpning, segmentering, maskering, skalering, skriving) fanges: siden får n=0, tom liste og feilmelding i meta.json; kjøringen fortsetter.
-Skrivefeil: cv2.imwrite kaster ikke, men returnerer False; returverdien sjekkes og False gir RuntimeError, slik at siden tas av unntaksgrenen."""
+Skrivefeil: cv2.imwrite returnerer False ved skrivefeil (f.eks. manglende katalog) og kan kaste cv2.error for ugyldig bilde; returverdien sjekkes og False gir RuntimeError, og enhver feil (inkl. cv2.error) fanges av unntaksgrenen."""
 import sys; sys.path.insert(0,"scripts"); import guard
 import json, cv2, numpy as np, time, os
 from PIL import Image
@@ -22,7 +22,7 @@ for f in files:
             crop=np.where(mask[y:y+h,x:x+w,None]>0,im[y:y+h,x:x+w],255).astype(np.uint8)
             crop=cv2.resize(crop,(max(1,round(w*128/max(h,1))),128),interpolation=cv2.INTER_AREA)
             lid=f"{b}__{i:03d}"; fn=f"{out}/lines/{lid}.png"; written.append(fn)
-            if not cv2.imwrite(fn,cv2.cvtColor(crop,cv2.COLOR_RGB2BGR)): raise RuntimeError(f"cv2.imwrite feilet: {lid}.png")   # imwrite kaster ikke, returnerer False
+            if not cv2.imwrite(fn,cv2.cvtColor(crop,cv2.COLOR_RGB2BGR)): raise RuntimeError(f"cv2.imwrite feilet: {lid}.png")   # imwrite returnerer False ved skrivefeil (kan kaste cv2.error for ugyldig bilde); begge fanges av except
             m["order"].append(lid); m["polys"].append(pts.tolist())
         m["sec"]=time.time()-t
     except Exception as e:

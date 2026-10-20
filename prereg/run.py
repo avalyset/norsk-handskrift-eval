@@ -6,7 +6,7 @@
                 segmenterer -> utklipp 128 px -> gjenkjenning (LM vekt 1,0) -> scoring. Stopper ved avvik. (Ikke kjørt før frys + Eiriks ja.)
   gjenskaping   kjører samme kjede to ganger på gitte PILOTsider (aldri heldout) og sammenligner SHA256 av alle utdata
 Kjedeprosessene kjøres som separate prosesser, hver i sitt venv (ADR 0001/0002)."""
-import argparse, hashlib, json, os, pathlib, subprocess, sys, shutil, random, time, re
+import argparse, datetime, hashlib, json, os, pathlib, subprocess, sys, shutil, random, time, re
 ROT = pathlib.Path(__file__).resolve().parent.parent
 HELD = ROT / "work" / "heldout-60.txt"; MAN = ROT / "prereg" / "manifest.json"
 PY = {k: str(ROT / f"venv-{k}" / "bin" / "python") for k in ("ufcn", "pylaia", "tools", "kraken")}
@@ -14,8 +14,8 @@ ZENODO = "https://zenodo.org/records/10255840/files/norhand_v3.zip?download=1"
 SEG = {"venv": "kraken", "modell": "venv-kraken/lib/python3.10/site-packages/kraken/blla.mlmodel", "script": "scripts/seg_kraken.py"}   # ADR 0004 (besluttet av Eirik 20.10.2026)
 LM_VEKT = "1.0"                                                                          # ADR 0005
 FILER = ["prereg/METHOD.md", "prereg/run.py", "prereg/score.py", "scripts/guard.py", "scripts/lib.py", "scripts/seg_generic.py", "scripts/seg_kraken.py", "scripts/dec.sh", "scripts/dec_lm.sh",
-         "work/heldout-60.txt", "scripts/presisjon.py", "scripts/differanser.py", "scripts/csv_escape.py", "scripts/parede.py", "results/parede-segmenterere.json", "prereg/gjenskaping.json", "results/presisjon.json", "results/pilot-differanser.json", "results/csv-escape.json",
-         "prereg/kilder/zenodo-10255840-norhand-v3.json", "prereg/kilder/zenodo-10628791-norhand-v2.json", "prereg/kilder/hf-revisjoner.json", "prereg/kilder/github-kraken.txt", "prereg/kilder/eksterne-dokumenter.sha256", "prereg/locks/venv-pylaia.freeze.txt", "prereg/locks/venv-ufcn.freeze.txt", "prereg/locks/venv-kraken.freeze.txt", "prereg/locks/venv-tools.freeze.txt",
+         "work/heldout-60.txt", "scripts/presisjon.py", "scripts/differanser.py", "scripts/csv_escape.py", "scripts/parede.py", "results/parede-segmenterere.json", "prereg/gjenskaping.json", "results/presisjon.json", "results/pilot-differanser.json", "results/csv-escape.json", "scripts/test_seg_kraken_krasj.py", "results/test-seg-krasj.txt",
+         "prereg/kilder/zenodo-10255840-norhand-v3.json", "prereg/kilder/zenodo-10628791-norhand-v2.json", "prereg/kilder/hf-revisjoner.json", "prereg/kilder/github-kraken.txt", "prereg/kilder/eksterne-dokumenter.sha256", "prereg/kilder/zenodo-10255840-README.md", "prereg/kilder/hf-NorHand-v3-line-README.md", "prereg/locks/venv-pylaia.freeze.txt", "prereg/locks/venv-ufcn.freeze.txt", "prereg/locks/venv-kraken.freeze.txt", "prereg/locks/venv-tools.freeze.txt",
          "venv-kraken/lib/python3.10/site-packages/kraken/blla.mlmodel", "models/doc-ufcn-norhand-v1-line/model.pth", "models/doc-ufcn-norhand-v1-line/parameters.yml",
          "models/doc-ufcn-generic-historical-line/model.pth", "models/doc-ufcn-generic-historical-line/parameters.yml",
          "models/pylaia-norhand-v3/weights.ckpt", "models/pylaia-norhand-v3/model", "models/pylaia-norhand-v3/syms.txt", "models/pylaia-norhand-v3/tokens.txt",
@@ -94,7 +94,7 @@ def gjenskaping(sider):
         for p in sorted((w / f"kj{k}" / "seg" / "lines").glob("*.png")): d["seg/lines/" + p.name] = sha(p)
         res.append(d)
     diff = [f for f in res[0] if res[0][f] != res[1].get(f)] + [f for f in res[1] if f not in res[0]]
-    rapport = {"sider": sider, "filer_sammenlignet": len(res[0]), "ulike": diff, "byte_identisk": not diff, "sha256_dec": res[0]["dec.txt"], "sha256_resultat": res[0]["resultat.json"], "kode_sha256": kode}
+    rapport = {"sider": sider, "filer_sammenlignet": len(res[0]), "ulike": diff, "byte_identisk": not diff, "sha256_dec": res[0]["dec.txt"], "sha256_resultat": res[0]["resultat.json"], "kode_sha256": kode, "tidspunkt_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
     json.dump(rapport, open(ROT / "prereg" / "gjenskaping.json", "w"), indent=1); print(json.dumps(rapport, indent=1)); sys.exit(0 if not diff else 6)
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("kommando", choices=["verifiser", "manifest", "kjor", "gjenskaping"]); ap.add_argument("--sider", default="")
