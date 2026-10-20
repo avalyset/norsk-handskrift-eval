@@ -5,14 +5,14 @@ hf-cache/
 tmp/
 models/
 data/
-work/hf128/
-work/lines*/
-work/p20/lines/
-work/p20/*/
-work/*.err
 __pycache__/
-work/seg/*/lines/
-work/val1000/lines/
-work/*/*.err
-*.png.tmp
-work/run-*/
+# datasett-tekst, bilder og rådata ligger bare på disk (lokal arbeidsmappe), aldri i git
+work/*
+!work/heldout-60.txt
+!work/heldout-60.txt.sha256
+!work/RESULTATER-pilot.md
+*.png
+*.jpg
+*.jpeg
+*.tsv
+*.parquet
