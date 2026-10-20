@@ -11,3 +11,7 @@ work/p20/lines/
 work/p20/*/
 work/*.err
 __pycache__/
+work/seg/*/lines/
+work/val1000/lines/
+work/*/*.err
+*.png.tmp

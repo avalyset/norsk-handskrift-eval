@@ -1,0 +1,28 @@
+"""usage: seg_generic.py <modelldir> <bildedir> <utdir> -- Doc-UFCN-segmentering, polygoner + 128px-utklipp. Heldout-vakt."""
+import sys; sys.path.insert(0,"scripts"); import guard
+import json, yaml, cv2, numpy as np, time, os
+from doc_ufcn.main import DocUFCN
+m,imgdir,out=sys.argv[1:4]
+p=yaml.safe_load(open(m+"/parameters.yml"))["parameters"]; cls=p["classes"]
+hz=[i for i,c in enumerate(cls) if "horizontal" in c] or [i for i,c in enumerate(cls) if i>0 and "text_line" in c.lower() or "line" in c.lower() and i>0]
+print("klasser",cls,"bruker",hz)
+files=sorted(f for f in os.listdir(imgdir) if f.endswith(".jpg")); guard.check(files)
+net=DocUFCN(len(cls),p["input_size"],"cpu"); net.load(m+"/model.pth",p["mean"],p["std"],mode="eval")
+os.makedirs(out+"/lines",exist_ok=True); meta={}; ids=[]
+for f in files:
+    b=f[:-4]; im=cv2.cvtColor(cv2.imread(f"{imgdir}/{f}"),cv2.COLOR_BGR2RGB)
+    t=time.time(); polys,_,_,_=net.predict(im,min_cc=p["min_cc"]); dt=time.time()-t
+    rows=[]
+    for c in hz:
+        for pl in polys.get(c,[]):
+            pts=np.array(pl["polygon"],dtype=np.int32); x,y,w,h=cv2.boundingRect(pts); xs=pts[:,0]
+            lo=xs.min()+0.15*(xs.max()-xs.min()); ly=float(pts[xs<=lo][:,1].mean()); rows.append((ly,x,y,w,h,pts))
+    rows.sort(key=lambda r:(r[0],r[1])); meta[b]={"sec":dt,"n":len(rows),"order":[],"polys":[]}
+    for i,(ly,x,y,w,h,pts) in enumerate(rows):
+        mask=np.zeros(im.shape[:2],np.uint8); cv2.fillPoly(mask,[pts],255)
+        crop=np.where(mask[y:y+h,x:x+w,None]>0,im[y:y+h,x:x+w],255).astype(np.uint8)
+        crop=cv2.resize(crop,(max(1,round(w*128/max(h,1))),128),interpolation=cv2.INTER_AREA)
+        lid=f"{b}__{i:03d}"; cv2.imwrite(f"{out}/lines/{lid}.png",cv2.cvtColor(crop,cv2.COLOR_RGB2BGR)); ids.append(lid)
+        meta[b]["order"].append(lid); meta[b]["polys"].append(pts.tolist())
+    print(b,len(rows),round(dt,2),flush=True)
+open(out+"/list.txt","w").write("\n".join(ids)+"\n"); json.dump(meta,open(out+"/meta.json","w"))
