@@ -1,0 +1,13 @@
+venv-*/
+uv-cache/
+hf/
+hf-cache/
+tmp/
+models/
+data/
+work/hf128/
+work/lines*/
+work/p20/lines/
+work/p20/*/
+work/*.err
+__pycache__/
